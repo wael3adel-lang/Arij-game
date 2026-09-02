@@ -11,7 +11,7 @@ body{background:#071d3a;color:#fff}
 .sky{position:absolute;inset:0 0 84%}.sun{position:absolute;width:82px;height:82px;border-radius:50%;right:7%;top:20px;background:#ffe88c;box-shadow:0 0 40px #fff8}
 .cloud{position:absolute;width:140px;height:34px;border-radius:40px;background:#fff9;left:7%;top:45px}.cloud:before,.cloud:after{content:"";position:absolute;border-radius:50%;background:#fff9}.cloud:before{width:55px;height:55px;left:20px;top:-27px}.cloud:after{width:65px;height:65px;left:65px;top:-34px}
 .hud{position:absolute;z-index:50;top:10px;left:50%;transform:translateX(-50%);width:min(820px,94%);padding:9px 15px;border-radius:22px;background:#fffffff2;color:#103650;box-shadow:0 7px 25px #003b5b44;text-align:center}
-.logo{font-size:clamp(22px,4vw,34px);font-weight:1000;color:#0876a8}.mission{font-size:clamp(16px,3vw,23px);font-weight:900}.mission b{font-size:1.35em;color:#ef6338}
+.logo{font-size:clamp(22px,4vw,34px);font-weight:1000;color:#0876a8;position:relative}.logo #soundBtn{border:0;background:#e8f8ff;color:#0876a8;border-radius:50%;width:38px;height:38px;padding:0;font-size:21px;box-shadow:none;vertical-align:middle;margin-left:8px;cursor:pointer}.mission{font-size:clamp(16px,3vw,23px);font-weight:900}.mission b{font-size:1.35em;color:#ef6338}
 .stats{display:flex;justify-content:center;gap:22px;font-weight:900;font-size:14px}.bar{height:6px;background:#d9edf5;border-radius:10px;margin-top:5px;overflow:hidden}.bar i{display:block;height:100%;width:100%;background:#ff8738;transition:width .25s}
 .sea{position:absolute;inset:16% 0 0;overflow:hidden}.wave{position:absolute;width:120%;left:-10%;height:70px;border-radius:50%;background:#ffffff16;top:5%}.wave:nth-child(2){top:28%;opacity:.5}.wave:nth-child(3){top:53%;opacity:.3}
 .sunken{position:absolute;bottom:-20px;left:6%;font-size:80px;opacity:.45}.plant{position:absolute;bottom:-8px;font-size:65px;opacity:.7}.p1{left:18%}.p2{right:18%}.p3{right:4%}
@@ -33,7 +33,7 @@ button{border:0;border-radius:17px;padding:14px 26px;background:#ff8136;color:#f
 <div id="game">
 <div class="sky"><div class="sun"></div><div class="cloud"></div></div>
 <div class="hud">
- <div class="logo">🎣 SAYI AVI</div>
+ <div class="logo">🎣 SAYI AVI <button id="soundBtn" aria-label="Ses">🔊</button></div>
  <div class="mission" id="mission">Şu sayıyı yakala: <b id="target">5</b></div>
  <div class="stats"><span>⭐ Puan: <b id="score">0</b></span><span>🏆 Tur: <b id="round">1</b>/10</span><span>🔥 Seri: <b id="streak">0</b></span></div>
  <div class="bar"><i id="timebar"></i></div>
@@ -67,7 +67,7 @@ function makeFish(){
   var f=document.createElement("div");f.className="fish";var c=colors[i%colors.length];
   f.style.setProperty("--c",c);f.style.background=c;f.style.left=rand(2,84)+"%";f.style.top=rand(7,86)+"%";
   f.dataset.num=nums[i];f.innerHTML='<span>'+nums[i]+'</span><i class="eye"></i>';
-  f.addEventListener("click",function(){catchFish(this)});sea.appendChild(f);swim(f);
+  f.addEventListener("click",function(){clickSound();catchFish(this)});sea.appendChild(f);swim(f);
  }
 }
 function swim(f){
@@ -86,11 +86,12 @@ function startTimer(){
  timer=setInterval(function(){timeLeft-=.1;bar.style.width=Math.max(0,timeLeft/8*100)+"%";if(timeLeft<=0){clearInterval(timer);if(!locked)wrongTimeout()}},100);
 }
 function wrongTimeout(){
- locked=true;streak=0;streakEl.textContent=0;showFeedback("⏰","Geç kaldın!","Bir sonraki turda daha hızlı ol.");setTimeout(nextRound,1000);
+ locked=true;streak=0;streakEl.textContent=0;wrongSound();speakTR("Süre doldu! Bir sonraki turda daha hızlı ol.");showFeedback("⏰","Geç kaldın!","Bir sonraki turda daha hızlı ol.");setTimeout(nextRound,1000);
 }
 function catchFish(f){
  if(!playing||locked)return;
  if(Number(f.dataset.num)===target){
+   fishSound(); winSound(); speakTR("Aferin! Doğru sayıyı yakaladın!");
   locked=true;clearInterval(timer);score+=10+streak*2;streak++;scoreEl.textContent=score;streakEl.textContent=streak;
   f.classList.add("good");showFeedback("🎉","AFERİN!","Doğru sayıyı yakaladın! +"+(10+(streak-1)*2)+" puan");
   setTimeout(nextRound,900);
@@ -106,17 +107,108 @@ function nextRound(){
  if(round>=10){finish();return}round++;roundEl.textContent=round;startRound()
 }
 function finish(){
- playing=false;clearInterval(timer);clearFish();bar.style.width="0%";
+ playing=false;clearInterval(timer);stopAmbient();clearFish();bar.style.width="0%";winSound();speakTR("Harika! Oyun bitti!");
  var stars=score>=100?"⭐⭐⭐":score>=70?"⭐⭐":"⭐";
  menu.innerHTML='<div class="emoji">🏆✨</div><h1>Oyun Bitti!</h1><p><b>'+score+' puan</b> topladın.</p><div style="font-size:32px">'+stars+'</div><p>Harika iş çıkardın! Tekrar deneyerek rekorunu kır.</p><button id="again">Tekrar Oyna 🔄</button>';
  menu.style.display="block";document.getElementById("again").addEventListener("click",startGame)
 }
+
+var audioCtx=null, masterGain=null, ambientTimer=null, soundOn=true;
+
+function initAudio(){
+  try{
+    if(!audioCtx){
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      masterGain=audioCtx.createGain();
+      masterGain.gain.value=.22;
+      masterGain.connect(audioCtx.destination);
+    }
+    if(audioCtx.state==="suspended") audioCtx.resume();
+  }catch(e){}
+}
+
+function tone(freq,duration,type,volume,when){
+  if(!soundOn) return;
+  initAudio();
+  if(!audioCtx||!masterGain) return;
+  try{
+    var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type||"sine"; o.frequency.setValueAtTime(freq,audioCtx.currentTime+(when||0));
+    g.gain.setValueAtTime(0.0001,audioCtx.currentTime+(when||0));
+    g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume||.08),audioCtx.currentTime+(when||0)+.015);
+    g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+(when||0)+(duration||.1));
+    o.connect(g);g.connect(masterGain);o.start(audioCtx.currentTime+(when||0));o.stop(audioCtx.currentTime+(when||0)+(duration||.1)+.03);
+  }catch(e){}
+}
+
+function noiseBurst(duration,volume,filterFreq){
+  if(!soundOn) return;
+  initAudio();
+  if(!audioCtx||!masterGain) return;
+  try{
+    var len=Math.floor(audioCtx.sampleRate*duration), buf=audioCtx.createBuffer(1,len,audioCtx.sampleRate), d=buf.getChannelData(0);
+    for(var i=0;i<len;i++) d[i]=(Math.random()*2-1)*(1-i/len);
+    var s=audioCtx.createBufferSource(), f=audioCtx.createBiquadFilter(), g=audioCtx.createGain();
+    s.buffer=buf; f.type="lowpass"; f.frequency.value=filterFreq||900;
+    g.gain.value=volume||.05; s.connect(f);f.connect(g);g.connect(masterGain);s.start();
+  }catch(e){}
+}
+
+function clickSound(){ tone(720,.06,"square",.045); tone(980,.045,"sine",.035,.035); }
+function fishSound(){ tone(420,.08,"sine",.055); tone(620,.12,"sine",.045,.055); }
+function wrongSound(){ tone(190,.16,"sawtooth",.07); tone(135,.18,"sine",.05,.08); }
+function winSound(){
+  tone(523,.16,"sine",.08);
+  tone(659,.16,"sine",.08,.11);
+  tone(784,.22,"sine",.09,.22);
+  tone(1047,.28,"sine",.08,.36);
+}
+function seaSound(){ noiseBurst(.45,.018,650); }
+
+function speakTR(text){
+  if(!soundOn || !("speechSynthesis" in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang="tr-TR"; u.rate=.9; u.pitch=1.08; u.volume=1;
+    var voices=window.speechSynthesis.getVoices();
+    for(var i=0;i<voices.length;i++){
+      if((voices[i].lang||"").toLowerCase().indexOf("tr")===0){u.voice=voices[i];break;}
+    }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function startAmbient(){
+  if(ambientTimer || !soundOn) return;
+  seaSound();
+  ambientTimer=setInterval(function(){
+    if(!playing || !soundOn){clearInterval(ambientTimer);ambientTimer=null;return;}
+    noiseBurst(.35,.012,700);
+    if(Math.random()<.7) tone(520+Math.random()*160,.08,"sine",.018);
+  },2200);
+}
+
+function stopAmbient(){
+  if(ambientTimer){clearInterval(ambientTimer);ambientTimer=null;}
+}
+
 function startGame(){
  menu.style.display="none";score=0;round=1;streak=0;playing=true;scoreEl.textContent=0;roundEl.textContent=1;streakEl.textContent=0;startRound()
 }
 startBtn.addEventListener("click",startGame);
 document.addEventListener("pointermove",function(e){if(!playing)return;net.style.display="block";net.style.left=(e.clientX-52)+"px";net.style.top=(e.clientY-52)+"px"});
 document.addEventListener("touchstart",function(){if(playing)net.style.display="block"},{passive:true});
+
+var soundBtn=document.getElementById("soundBtn");
+soundBtn.addEventListener("click",function(e){
+  e.stopPropagation();
+  soundOn=!soundOn;
+  soundBtn.textContent=soundOn?"🔊":"🔇";
+  if(soundOn){initAudio();startAmbient();speakTR("Sesler açık.");}
+  else{stopAmbient();try{window.speechSynthesis.cancel();}catch(e){}}
+});
+
 bubbles();
 })();
 </script>
