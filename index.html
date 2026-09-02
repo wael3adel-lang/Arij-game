@@ -47,10 +47,22 @@ function bubbles(){for(var i=0;i<20;i++){var b=document.createElement("i");b.cla
 function clearFish(){var a=water.querySelectorAll(".fish");for(var i=0;i<a.length;i++)a[i].remove()}
 function fishMove(f){if(!playing||!f.parentNode)return;var d=rand(2500,5500);f.style.transition="left "+d+"ms linear,top "+d+"ms ease-in-out";f.style.left=rand(3,88)+"%";f.style.top=rand(8,84)+"%";timers.push(setTimeout(function(){fishMove(f)},d))}
 function createFish(){
- var nums=[target];
- while(nums.length<10){var n=Math.floor(rand(1,10));if(nums.indexOf(n)<0)nums.push(n)}
- nums.sort(function(){return Math.random()-.5});
- for(var i=0;i<nums.length;i++){var f=document.createElement("div");f.className="fish";f.style.setProperty("--c",palette[i%palette.length]);f.style.background=palette[i%palette.length];f.style.left=rand(2,86)+"%";f.style.top=rand(10,82)+"%";f.dataset.num=nums[i];f.innerHTML='<span class="num">'+nums[i]+'</span><i class="eye"></i>';f.addEventListener("click",function(){catchFish(this)});water.appendChild(f);fishMove(f)}
+ var nums=[];
+ for(var n=1;n<=10;n++){nums.push(n)}
+ nums.sort(function(){return Math.random()-0.5});
+ for(var i=0;i<nums.length;i++){
+   var f=document.createElement("div");
+   f.className="fish";
+   f.style.setProperty("--c",palette[i%palette.length]);
+   f.style.background=palette[i%palette.length];
+   f.style.left=rand(2,86)+"%";
+   f.style.top=rand(10,82)+"%";
+   f.dataset.num=nums[i];
+   f.innerHTML='<span class="num">'+nums[i]+'</span><i class="eye"></i>';
+   f.onclick=function(){catchFish(this)};
+   water.appendChild(f);
+   fishMove(f);
+ }
 }
 function catchFish(f){
  if(!playing||locked)return;
