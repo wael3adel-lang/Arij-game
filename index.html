@@ -2,17 +2,19 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Çocuk Oyunları - Sayı Avı</title>
+<title>Sayı Avı - Çocuk Oyunu</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
@@ -21,8 +23,7 @@ html,body{
 }
 
 body{
-  background:#045579;
-  color:white;
+  background:#087ca5;
 }
 
 button{
@@ -32,206 +33,67 @@ button{
   touch-action:manipulation;
 }
 
-/* =====================================================
+/* =========================
    APP
-===================================================== */
+========================= */
 
 #app{
+  position:relative;
   width:100%;
   height:100%;
-  position:relative;
   overflow:hidden;
 }
 
-.screen{
+/* =========================
+   GAME
+========================= */
+
+#game{
   position:absolute;
   inset:0;
-  display:none;
-}
-
-.screen.active{
-  display:block;
-}
-
-
-/* =====================================================
-   MENU
-===================================================== */
-
-#menuScreen{
-  overflow:auto;
-
-  background:
-    radial-gradient(
-      circle at 50% 15%,
-      #75e4fa,
-      #169bc5 45%,
-      #034e70 100%
-    );
-}
-
-.menuBox{
-  width:min(900px,94%);
-  margin:35px auto;
-  padding:30px 22px;
+  overflow:hidden;
 
   background:
     linear-gradient(
-      180deg,
-      #fffffffa,
-      #e9fafffa
-    );
-
-  color:#143b52;
-
-  border-radius:30px;
-
-  box-shadow:
-    0 20px 60px #002f4d66;
-
-  text-align:center;
-}
-
-.menuLogo{
-  font-size:clamp(32px,6vw,52px);
-  font-weight:1000;
-  color:#0876a8;
-}
-
-.menuSubtitle{
-  margin:8px 0 28px;
-  font-size:19px;
-  color:#557082;
-}
-
-.gamesGrid{
-  display:grid;
-  grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
-}
-
-.gameCard{
-  background:
-    linear-gradient(
-      180deg,
-      #ffffff,
-      #eafaff
-    );
-
-  border:3px solid #bdeafa;
-  border-radius:22px;
-
-  padding:22px 15px;
-
-  box-shadow:
-    0 7px 18px #00608018;
-
-  transition:.2s;
-}
-
-.gameCard:hover{
-  transform:translateY(-4px);
-  border-color:#38b9df;
-}
-
-.gameIcon{
-  font-size:58px;
-}
-
-.gameTitle{
-  margin-top:6px;
-  font-size:25px;
-  font-weight:1000;
-  color:#0876a8;
-}
-
-.gameDescription{
-  margin-top:7px;
-  min-height:45px;
-  color:#597486;
-  line-height:1.45;
-}
-
-.playButton{
-  margin-top:14px;
-
-  padding:13px 25px;
-
-  border-radius:16px;
-
-  background:
-    linear-gradient(
-      #ff9e53,
-      #ed6330
-    );
-
-  color:white;
-
-  font-size:18px;
-  font-weight:1000;
-
-  box-shadow:
-    0 5px 0 #b94b1b;
-}
-
-.playButton:active{
-  transform:translateY(3px);
-  box-shadow:0 2px 0 #b94b1b;
-}
-
-
-/* =====================================================
-   GAME
-===================================================== */
-
-#gameScreen{
-  background:
-    linear-gradient(
-      #69ddf5 0%,
-      #159fca 15%,
-      #087da6 45%,
-      #034f70 100%
+      #70dff5 0%,
+      #21afd2 22%,
+      #087fa8 55%,
+      #034d6c 100%
     );
 }
 
-
-/* =====================================================
+/* =========================
    SKY
-===================================================== */
-
-.sky{
-  position:absolute;
-  inset:0 0 85%;
-}
+========================= */
 
 .sun{
   position:absolute;
-  width:85px;
-  height:85px;
 
-  right:7%;
+  width:80px;
+  height:80px;
+
   top:15px;
+  right:7%;
 
   border-radius:50%;
 
-  background:#fff4a5;
+  background:#fff4a8;
 
   box-shadow:
-    0 0 30px white,
-    0 0 70px #fff9;
+    0 0 30px #fff,
+    0 0 70px #fff8;
 }
 
 .cloud{
   position:absolute;
 
+  width:150px;
+  height:38px;
+
+  top:55px;
   left:7%;
-  top:50px;
 
-  width:145px;
-  height:36px;
-
-  border-radius:30px;
+  border-radius:40px;
 
   background:#ffffffaa;
 }
@@ -239,84 +101,86 @@ button{
 .cloud:before,
 .cloud:after{
   content:"";
+
   position:absolute;
+
   border-radius:50%;
+
   background:#ffffffaa;
 }
 
 .cloud:before{
   width:55px;
   height:55px;
+
   left:20px;
-  top:-27px;
+  top:-28px;
 }
 
 .cloud:after{
   width:65px;
   height:65px;
-  left:68px;
-  top:-35px;
+
+  left:72px;
+  top:-36px;
 }
 
-
-/* =====================================================
+/* =========================
    HUD
-===================================================== */
+========================= */
 
-.hud{
+#hud{
   position:absolute;
+
   z-index:100;
 
-  top:8px;
+  top:6px;
   left:50%;
 
   transform:translateX(-50%);
 
-  width:min(920px,96%);
+  width:min(900px,97%);
 
-  padding:8px 13px;
+  padding:7px 10px;
 
-  border-radius:22px;
+  border-radius:20px;
 
-  background:
-    linear-gradient(
-      180deg,
-      #fffffffa,
-      #e5f9fffa
-    );
+  background:#ffffffef;
 
-  color:#123c53;
-
-  border:2px solid white;
-
-  box-shadow:
-    0 8px 25px #003b5b44;
+  color:#174257;
 
   text-align:center;
+
+  box-shadow:
+    0 8px 25px #00364d55;
+
+  border:2px solid white;
 }
 
 .logo{
-  font-size:clamp(21px,4vw,34px);
+  font-size:clamp(20px,4vw,32px);
   font-weight:1000;
   color:#0876a8;
 }
 
-.mission{
+.question{
   margin-top:2px;
-  font-size:clamp(16px,3vw,22px);
-  font-weight:1000;
+
+  font-size:clamp(15px,3vw,21px);
+
+  font-weight:900;
 }
 
-.mission b{
+#target{
   display:inline-flex;
-
-  width:44px;
-  height:44px;
 
   align-items:center;
   justify-content:center;
 
-  margin-left:6px;
+  width:40px;
+  height:40px;
+
+  margin-left:5px;
 
   border-radius:50%;
 
@@ -324,241 +188,190 @@ button{
     radial-gradient(
       circle at 30% 25%,
       white,
-      #a9e6fa 45%,
-      #1889ba
+      #b5eaf8 45%,
+      #1689b7
     );
 
-  color:#083e5b;
+  color:#063e58;
 
-  font-size:29px;
+  font-size:25px;
 
-  border:3px solid white;
+  border:2px solid white;
 
   box-shadow:
-    0 3px 8px #00354d55;
+    0 3px 7px #00344d55;
 }
 
 .stats{
   display:flex;
+
   justify-content:center;
-  gap:20px;
 
-  margin-top:3px;
+  gap:18px;
 
-  font-size:13px;
-  font-weight:900;
-}
-
-.timerLine{
-  margin-top:4px;
+  margin-top:2px;
 
   font-size:12px;
+
   font-weight:900;
 }
 
-.timebar{
+.timer{
+  margin-top:2px;
+
+  font-size:11px;
+
+  font-weight:900;
+}
+
+.timeBackground{
+  width:100%;
   height:7px;
 
   margin-top:3px;
 
-  background:#c8e5ee;
-
   border-radius:10px;
 
   overflow:hidden;
+
+  background:#c9e2e9;
 }
 
-#timebar{
-  display:block;
-
+#timeBar{
   width:100%;
   height:100%;
 
   background:
     linear-gradient(
       90deg,
-      #27d27b,
-      #f5ca37,
-      #ff7045
+      #24c96b,
+      #f1c833,
+      #ef583c
     );
 }
 
-
-/* =====================================================
+/* =========================
    SEA
-===================================================== */
+========================= */
 
 #sea{
   position:absolute;
-  inset:15% 0 0;
+
+  inset:17% 0 0;
 
   overflow:hidden;
-
-  background:
-    radial-gradient(
-      ellipse at 50% 8%,
-      #b6f4ff44,
-      transparent 38%
-    ),
-    linear-gradient(
-      #13a9d944,
-      #00577d88
-    );
 }
 
 .wave{
   position:absolute;
 
-  left:-15%;
+  left:-20%;
 
-  width:130%;
-  height:70px;
+  width:140%;
+  height:75px;
 
   border-radius:50%;
 
   background:#ffffff12;
-
-  animation:
-    waveMove 6s ease-in-out infinite alternate;
 }
 
-.wave:nth-child(1){
-  top:4%;
+.wave1{
+  top:8%;
 }
 
-.wave:nth-child(2){
-  top:35%;
-  opacity:.5;
-  animation-duration:8s;
+.wave2{
+  top:45%;
 }
 
-.wave:nth-child(3){
-  top:65%;
-  opacity:.3;
-  animation-duration:10s;
-}
-
-@keyframes waveMove{
-  to{
-    transform:translateX(40px);
-  }
-}
-
-.bubble{
-  position:absolute;
-
-  border:2px solid #ffffff77;
-
-  border-radius:50%;
-
-  opacity:.55;
-
-  animation:
-    bubbleMove 9s linear infinite;
-}
-
-@keyframes bubbleMove{
-  to{
-    transform:translateY(-110vh);
-    opacity:0;
-  }
+.wave3{
+  top:72%;
 }
 
 .seabed{
   position:absolute;
 
-  left:0;
-  right:0;
-  bottom:0;
+  left:-5%;
+  bottom:-5%;
 
-  height:17%;
+  width:110%;
+  height:18%;
+
+  border-radius:50% 50% 0 0;
 
   background:
     radial-gradient(
-      ellipse at center,
-      #d5bd82,
-      #94794d
+      ellipse,
+      #d9c58a,
+      #80643e
     );
-
-  border-radius:
-    50% 50% 0 0 /
-    20% 20% 0 0;
 }
+
+/* =========================
+   PLANTS
+========================= */
 
 .plant{
   position:absolute;
+
   bottom:7%;
 
-  color:#35aa68;
-
-  font-size:65px;
+  font-size:55px;
 
   opacity:.75;
-
-  filter:
-    drop-shadow(
-      0 7px 4px #00364d77
-    );
 }
 
 .plant1{
-  left:12%;
+  left:8%;
 }
 
 .plant2{
-  right:16%;
+  right:10%;
 }
 
-.plant3{
-  right:3%;
-}
-
-
-/* =====================================================
-   REALISTIC FISH
-===================================================== */
+/* =========================
+   FISH
+========================= */
 
 .fish{
   position:absolute;
 
-  width:120px;
-  height:78px;
-
   z-index:30;
+
+  width:105px;
+  height:68px;
 
   cursor:pointer;
 
-  touch-action:manipulation;
   user-select:none;
 
   transition:
-    left 4s linear,
-    top 4s ease-in-out;
+    left 4.5s linear,
+    top 4.5s ease-in-out;
 
   filter:
     drop-shadow(
-      0 9px 6px #00364f66
+      0 8px 5px #00344f66
     );
 }
 
 .fish svg{
   width:100%;
   height:100%;
-  overflow:visible;
 }
 
 .fishNumber{
   position:absolute;
 
-  left:53%;
-  top:52%;
+  left:54%;
+  top:50%;
 
   transform:translate(-50%,-50%);
 
-  width:34px;
-  height:34px;
+  width:30px;
+  height:30px;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
@@ -567,115 +380,125 @@ button{
   background:
     radial-gradient(
       circle at 30% 25%,
-      #ffffff,
-      #eefaff 60%,
-      #b9d5df
+      white,
+      #f1fbff 60%,
+      #b9d5de
     );
 
-  color:#123d55;
+  color:#123c53;
 
-  font-size:22px;
+  font-size:20px;
+
   font-weight:1000;
 
   border:2px solid white;
 
   box-shadow:
-    0 3px 6px #001e2d66;
+    0 2px 5px #00364f66;
+
+  /*
+    يمنع الرقم من التفاعل مع اللمس
+    ويبقيه ثابتًا داخل السمكة
+  */
+  pointer-events:none;
 }
 
 .fish.caught{
   animation:
-    fishCaught .6s forwards;
+    caught .55s forwards;
 }
 
-@keyframes fishCaught{
-  35%{
-    transform:scale(1.25) rotate(-8deg);
+@keyframes caught{
+
+  30%{
+    transform:scale(1.2);
   }
 
   100%{
     transform:scale(0);
     opacity:0;
   }
+
 }
 
 .fish.wrong{
   animation:
-    fishWrong .35s;
+    wrong .3s;
 }
 
-@keyframes fishWrong{
+@keyframes wrong{
+
   25%{
-    margin-left:-13px;
+    transform:translateX(-9px);
   }
 
   75%{
-    margin-left:13px;
+    transform:translateX(9px);
   }
+
 }
 
-
-/* =====================================================
-   FISHING NET - SMALL
-===================================================== */
+/* =========================
+   NET
+========================= */
 
 #net{
   position:absolute;
 
   z-index:80;
 
-  width:48px;
-  height:48px;
-
   display:none;
+
+  width:42px;
+  height:42px;
 
   pointer-events:none;
 
-  transform:rotate(-18deg);
+  transform:rotate(-15deg);
 
   filter:
     drop-shadow(
-      0 6px 5px #001e3388
+      0 5px 5px #002b4088
     );
 }
 
-.netRim{
+.netCircle{
   position:absolute;
+
   inset:0;
 
-  border:4px solid #e4edf0;
-
   border-radius:50%;
+
+  border:3px solid #e8eeee;
 
   background:
     radial-gradient(
       circle,
-      transparent 50%,
-      #ffffff22
+      transparent 45%,
+      #ffffff18
     );
 
   box-shadow:
-    inset 0 0 0 2px #61757c,
-    0 3px 6px #001c2a88;
+    inset 0 0 0 1px #66777d;
 }
 
 .netMesh{
   position:absolute;
 
-  inset:7px;
+  inset:6px;
 
   border-radius:50%;
 
   background:
     repeating-linear-gradient(
       0deg,
-      transparent 0 7px,
-      #ffffff99 8px 9px
+      transparent 0 6px,
+      #ffffff99 7px 8px
     ),
     repeating-linear-gradient(
       90deg,
-      transparent 0 7px,
-      #ffffff99 8px 9px
+      transparent 0 6px,
+      #ffffff99 7px 8px
     );
 
   clip-path:circle(50%);
@@ -684,40 +507,37 @@ button{
 .netHandle{
   position:absolute;
 
-  width:65px;
-  height:8px;
+  width:55px;
+  height:6px;
 
-  right:-52px;
-  top:37px;
+  top:31px;
+  right:-44px;
 
-  border-radius:10px;
+  border-radius:8px;
 
   background:
     linear-gradient(
-      #d69a5a,
-      #6e3e1c 50%,
-      #c98b51
+      #dba166,
+      #75451f,
+      #c88d53
     );
 
-  border:1px solid #542d16;
-
   transform:rotate(53deg);
+
+  border:1px solid #543016;
 }
 
-
-/* =====================================================
+/* =========================
    FEEDBACK
-===================================================== */
+========================= */
 
 #feedback{
   position:absolute;
 
-  z-index:150;
+  z-index:200;
 
   left:50%;
-  top:53%;
-
-  width:min(400px,88%);
+  top:55%;
 
   transform:
     translate(-50%,-50%)
@@ -726,6 +546,8 @@ button{
   opacity:0;
 
   pointer-events:none;
+
+  width:min(390px,88%);
 
   padding:20px;
 
@@ -737,14 +559,12 @@ button{
       #e8faff
     );
 
-  color:#126c91;
+  color:#116b8d;
 
   text-align:center;
 
-  border:2px solid white;
-
   box-shadow:
-    0 15px 45px #00294d66;
+    0 15px 45px #002d4d66;
 
   transition:.2s;
 }
@@ -758,58 +578,29 @@ button{
 }
 
 .feedbackIcon{
-  font-size:52px;
+  font-size:48px;
 }
 
 .feedbackTitle{
-  font-size:28px;
+  font-size:27px;
   font-weight:1000;
 }
 
 .feedbackText{
   margin-top:5px;
 
-  font-size:16px;
+  font-size:15px;
   font-weight:700;
 }
 
+/* =========================
+   START
+========================= */
 
-/* =====================================================
-   SOUND
-===================================================== */
-
-#soundBtn{
+#startScreen{
   position:absolute;
 
-  right:10px;
-  bottom:10px;
-
-  z-index:110;
-
-  padding:8px 11px;
-
-  border-radius:14px;
-
-  background:#ffffffdd;
-
-  color:#16455b;
-
-  font-size:12px;
-  font-weight:1000;
-
-  box-shadow:
-    0 4px 12px #00344d44;
-}
-
-
-/* =====================================================
-   START SCREEN
-===================================================== */
-
-#startOverlay{
-  position:absolute;
-
-  z-index:120;
+  z-index:300;
 
   inset:0;
 
@@ -819,159 +610,171 @@ button{
   justify-content:center;
 
   padding:20px;
+
+  background:#003b54aa;
 }
 
 .startBox{
-  width:min(470px,92%);
+  width:min(460px,94%);
 
-  padding:28px 20px;
+  padding:25px 18px;
 
-  border-radius:30px;
+  border-radius:28px;
 
   background:
     linear-gradient(
-      #fffffff7,
-      #e7fafff5
+      #ffffff,
+      #e8faff
     );
 
-  color:#143b52;
+  color:#163d52;
 
   text-align:center;
 
-  border:2px solid white;
-
   box-shadow:
-    0 20px 60px #001e3d77;
+    0 20px 60px #002d4d88;
+
+  border:2px solid white;
 }
 
 .startEmoji{
-  font-size:65px;
+  font-size:55px;
 }
 
 .startBox h1{
   margin:4px 0 8px;
 
-  font-size:38px;
+  font-size:34px;
 
   color:#0876a8;
 }
 
 .startBox p{
-  font-size:17px;
   line-height:1.5;
+
+  font-size:16px;
 }
 
-.startInfo{
-  margin:12px 0 18px;
+.info{
+  margin:15px 0;
+
+  color:#607789;
 
   font-size:14px;
-
-  color:#587184;
 }
 
-.startBtn{
-  padding:14px 25px;
+#startButton{
+  padding:14px 27px;
 
-  border-radius:17px;
+  border-radius:16px;
 
   background:
     linear-gradient(
-      #ff9d52,
-      #ed6331
+      #ff9e54,
+      #e96131
     );
 
   color:white;
 
   font-size:19px;
-  font-weight:1000;
-
-  box-shadow:
-    0 5px 0 #bc4c1d;
-}
-
-.testSound{
-  margin-left:7px;
-
-  padding:14px 17px;
-
-  border-radius:17px;
-
-  background:
-    linear-gradient(
-      #45b9eb,
-      #0877ac
-    );
-
-  color:white;
 
   font-weight:1000;
 
   box-shadow:
-    0 5px 0 #07587f;
+    0 5px 0 #b94c1e;
 }
 
+#startButton:active{
+  transform:translateY(3px);
 
-/* =====================================================
+  box-shadow:
+    0 2px 0 #b94c1e;
+}
+
+#soundButton{
+  position:absolute;
+
+  z-index:350;
+
+  right:9px;
+  bottom:9px;
+
+  padding:7px 10px;
+
+  border-radius:13px;
+
+  background:#ffffffdd;
+
+  color:#17465b;
+
+  font-size:11px;
+
+  font-weight:900;
+}
+
+/* =========================
    MOBILE
-===================================================== */
+========================= */
 
 @media(max-width:600px){
 
-  .hud{
-    top:4px;
+  #hud{
     width:98%;
+
+    top:3px;
+
     padding:5px 7px;
-    border-radius:16px;
+
+    border-radius:15px;
   }
 
   .logo{
     font-size:18px;
   }
 
-  .mission{
+  .question{
     font-size:14px;
   }
 
-  .mission b{
-    width:38px;
-    height:38px;
-    font-size:25px;
+  #target{
+    width:35px;
+    height:35px;
+
+    font-size:22px;
   }
 
   .stats{
     gap:8px;
+
     font-size:10px;
   }
 
-  .timerLine{
+  .timer{
     font-size:10px;
   }
 
   #sea{
-    inset:17% 0 0;
+    inset:19% 0 0;
   }
 
   .fish{
-    width:88px;
-    height:58px;
+    width:82px;
+    height:54px;
   }
 
   .fishNumber{
-    width:29px;
-    height:29px;
-    font-size:19px;
-  }
+    width:27px;
+    height:27px;
 
-  /*
-    VERY SMALL NET ON MOBILE
-  */
+    font-size:18px;
+  }
 
   #net{
-    width:38px;
-    height:38px;
+    width:34px;
+    height:34px;
   }
 
-  .netRim{
+  .netCircle{
     border-width:3px;
   }
 
@@ -980,64 +783,31 @@ button{
   }
 
   .netHandle{
-    width:48px;
-    height:6px;
-    right:-38px;
-    top:30px;
-  }
+    width:43px;
+    height:5px;
 
-  #soundBtn{
-    font-size:10px;
-    padding:6px 8px;
+    top:25px;
+    right:-34px;
   }
 
   .startBox{
-    padding:22px 14px;
+    padding:20px 14px;
   }
 
   .startEmoji{
-    font-size:50px;
+    font-size:45px;
   }
 
   .startBox h1{
-    font-size:30px;
+    font-size:28px;
   }
 
   .startBox p{
-    font-size:15px;
-  }
-
-  .testSound{
-    margin-left:3px;
-    padding:12px 10px;
-    font-size:13px;
+    font-size:14px;
   }
 
 }
 
-@media(max-width:370px){
-
-  .stats{
-    gap:5px;
-    font-size:9px;
-  }
-
-  .logo{
-    font-size:16px;
-  }
-
-  .fish{
-    width:78px;
-    height:53px;
-  }
-
-  .fishNumber{
-    width:27px;
-    height:27px;
-    font-size:18px;
-  }
-
-}
 </style>
 </head>
 
@@ -1046,189 +816,163 @@ button{
 
 <div id="app">
 
+  <main id="game">
 
-<!-- =====================================================
-     GAME MENU
-===================================================== -->
-
-<section id="menuScreen" class="screen">
-
-  <div class="menuBox">
-
-    <div class="menuLogo">
-      🎮 ÇOCUK OYUNLARI
-    </div>
-
-    <div class="menuSubtitle">
-      Eğlenerek öğren!
-    </div>
-
-    <div id="gamesGrid" class="gamesGrid"></div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     SAYI AVI
-===================================================== -->
-
-<section id="gameScreen" class="screen active">
-
-  <div class="sky">
     <div class="sun"></div>
     <div class="cloud"></div>
-  </div>
 
 
-  <!-- HUD -->
+    <!-- ================= HUD ================= -->
 
-  <div class="hud">
+    <div id="hud">
 
-    <div class="logo">
-      🎣 SAYI AVI
-    </div>
-
-    <div class="mission">
-      ŞU SAYIYI YAKALA:
-      <b id="target">5</b>
-    </div>
-
-    <div class="stats">
-
-      <span>
-        ⭐ Puan:
-        <strong id="score">0</strong>
-      </span>
-
-      <span>
-        🏆 Tur:
-        <strong id="round">1</strong>/10
-      </span>
-
-      <span>
-        🔥 Seri:
-        <strong id="streak">0</strong>
-      </span>
-
-    </div>
-
-    <div class="timerLine">
-      ⏱️ Kalan süre:
-      <strong id="timerText">60</strong>
-      saniye
-    </div>
-
-    <div class="timebar">
-      <i id="timebar"></i>
-    </div>
-
-  </div>
-
-
-  <!-- SEA -->
-
-  <div id="sea">
-
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-
-    <div class="seabed"></div>
-
-    <div class="plant plant1">🌿</div>
-    <div class="plant plant2">🌿</div>
-    <div class="plant plant3">🪸</div>
-
-  </div>
-
-
-  <!-- SMALL NET -->
-
-  <div id="net">
-
-    <div class="netRim"></div>
-    <div class="netMesh"></div>
-    <div class="netHandle"></div>
-
-  </div>
-
-
-  <!-- FEEDBACK -->
-
-  <div id="feedback">
-
-    <div
-      id="feedbackIcon"
-      class="feedbackIcon">
-      🎉
-    </div>
-
-    <div
-      id="feedbackTitle"
-      class="feedbackTitle">
-      AFERİN!
-    </div>
-
-    <div
-      id="feedbackText"
-      class="feedbackText">
-    </div>
-
-  </div>
-
-
-  <!-- SOUND BUTTON -->
-
-  <button id="soundBtn">
-    🔊 SES AÇIK
-  </button>
-
-
-  <!-- START -->
-
-  <div id="startOverlay">
-
-    <div class="startBox">
-
-      <div class="startEmoji">
-        🌊🐟🎣
+      <div class="logo">
+        🎣 SAYI AVI
       </div>
 
-      <h1>
-        Sayı Avı
-      </h1>
+      <div class="question">
+        ŞU SAYIYI YAKALA:
 
-      <p>
-        <b>Doğru balığı yakala!</b>
-        <br>
-        Hedef sayıyı bul ve ağınla yakala.
-      </p>
-
-      <div class="startInfo">
-        10 tur<br>
-        Her tur için 60 saniye<br>
-        Doğru ve yanlış sesleri
+        <span id="target">
+          5
+        </span>
       </div>
 
-      <button
-        id="startBtn"
-        class="startBtn">
-        Oyuna Başla 🚀
-      </button>
+      <div class="stats">
 
-      <button
-        id="testSoundBtn"
-        class="testSound">
-        🔊 Sesi Test Et
-      </button>
+        <span>
+          ⭐ Puan:
+          <b id="score">0</b>
+        </span>
+
+        <span>
+          🏆 Tur:
+          <b id="round">1</b>/10
+        </span>
+
+        <span>
+          🔥 Seri:
+          <b id="streak">0</b>
+        </span>
+
+      </div>
+
+      <div class="timer">
+        ⏱️ Kalan:
+        <b id="timerText">60</b>
+        saniye
+      </div>
+
+      <div class="timeBackground">
+        <div id="timeBar"></div>
+      </div>
 
     </div>
 
-  </div>
 
-</section>
+    <!-- ================= SEA ================= -->
+
+    <div id="sea">
+
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+      <div class="wave wave3"></div>
+
+      <div class="seabed"></div>
+
+      <div class="plant plant1">
+        🌿
+      </div>
+
+      <div class="plant plant2">
+        🪸
+      </div>
+
+    </div>
+
+
+    <!-- ================= NET ================= -->
+
+    <div id="net">
+
+      <div class="netCircle"></div>
+      <div class="netMesh"></div>
+      <div class="netHandle"></div>
+
+    </div>
+
+
+    <!-- ================= FEEDBACK ================= -->
+
+    <div id="feedback">
+
+      <div
+        id="feedbackIcon"
+        class="feedbackIcon">
+        🎉
+      </div>
+
+      <div
+        id="feedbackTitle"
+        class="feedbackTitle">
+        AFERİN!
+      </div>
+
+      <div
+        id="feedbackText"
+        class="feedbackText">
+      </div>
+
+    </div>
+
+
+    <!-- ================= SOUND ================= -->
+
+    <button
+      id="soundButton"
+      type="button">
+      🔊 SES AÇIK
+    </button>
+
+
+    <!-- ================= START ================= -->
+
+    <div id="startScreen">
+
+      <div class="startBox">
+
+        <div class="startEmoji">
+          🐟🎣🌊
+        </div>
+
+        <h1>
+          Sayı Avı
+        </h1>
+
+        <p>
+          <b>Doğru balığı yakala!</b>
+          <br>
+          Ekranda bulunan 5 balıktan,
+          hedef sayıyı taşıyan balığı bul.
+        </p>
+
+        <div class="info">
+          🎯 5 balık<br>
+          ⏱️ Her tur 60 saniye<br>
+          🏆 10 tur
+        </div>
+
+        <button
+          id="startButton"
+          type="button">
+          Oyuna Başla 🚀
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
 
 </div>
 
@@ -1236,71 +980,36 @@ button{
 <script>
 
 /* =====================================================
-   GAME SYSTEM
-   -----------------------------------------------------
-   This registry allows us to add many games later.
+   GAME CONFIGURATION
 ===================================================== */
 
-const GAME_REGISTRY = [];
+const GAME_CONFIG = {
 
+  rounds:10,
 
-function registerGame(game){
-  GAME_REGISTRY.push(game);
-}
+  secondsPerRound:60,
 
+  fishCount:5,
 
-/* =====================================================
-   REGISTER CURRENT GAME
-===================================================== */
+  minNumber:1,
 
-registerGame({
+  maxNumber:10
 
-  id:"sayi-avi",
-
-  title:"Sayı Avı",
-
-  icon:"🐟🎣",
-
-  description:
-    "Doğru sayıyı taşıyan balığı bul ve yakala.",
-
-  enabled:true
-
-});
-
-
-/*
-  FUTURE GAME EXAMPLE:
-
-  registerGame({
-    id:"renk-avi",
-    title:"Renk Avı",
-    icon:"🎨",
-    description:"Doğru rengi bul.",
-    enabled:true
-  });
-
-*/
+};
 
 
 /* =====================================================
    ELEMENTS
 ===================================================== */
 
-const gameScreen =
-  document.getElementById("gameScreen");
+const startScreen =
+  document.getElementById("startScreen");
 
-const startOverlay =
-  document.getElementById("startOverlay");
+const startButton =
+  document.getElementById("startButton");
 
-const startBtn =
-  document.getElementById("startBtn");
-
-const testSoundBtn =
-  document.getElementById("testSoundBtn");
-
-const soundBtn =
-  document.getElementById("soundBtn");
+const soundButton =
+  document.getElementById("soundButton");
 
 const sea =
   document.getElementById("sea");
@@ -1308,23 +1017,23 @@ const sea =
 const net =
   document.getElementById("net");
 
-const targetEl =
+const targetElement =
   document.getElementById("target");
 
-const scoreEl =
+const scoreElement =
   document.getElementById("score");
 
-const roundEl =
+const roundElement =
   document.getElementById("round");
 
-const streakEl =
+const streakElement =
   document.getElementById("streak");
 
 const timerText =
   document.getElementById("timerText");
 
-const timebar =
-  document.getElementById("timebar");
+const timeBar =
+  document.getElementById("timeBar");
 
 const feedback =
   document.getElementById("feedback");
@@ -1340,7 +1049,7 @@ const feedbackText =
 
 
 /* =====================================================
-   GAME VARIABLES
+   GAME STATE
 ===================================================== */
 
 let score = 0;
@@ -1351,25 +1060,23 @@ let streak = 0;
 
 let target = 1;
 
+let timeLeft =
+  GAME_CONFIG.secondsPerRound;
+
+let timerId = null;
+
 let playing = false;
 
 let locked = false;
 
-let timer = null;
-
-let timeLeft = 60;
-
-const ROUND_SECONDS = 60;
+let soundEnabled = true;
 
 
 /* =====================================================
    AUDIO
-   ONLY THREE SOUNDS
 ===================================================== */
 
-let soundOn = true;
-
-const sounds = {
+const audioFiles = {
 
   click:
     new Audio("sounds/click.wav"),
@@ -1383,91 +1090,64 @@ const sounds = {
 };
 
 
-Object.keys(sounds).forEach(
-  function(name){
-
-    sounds[name].preload = "auto";
-
-    sounds[name].volume = .85;
-
-  }
-);
-
-
 function playSound(name){
 
-  if(!soundOn) return;
+  if(!soundEnabled){
+    return;
+  }
 
   const audio =
-    sounds[name];
+    audioFiles[name];
 
-  if(!audio) return;
+  if(!audio){
+    return;
+  }
 
   try{
 
     audio.currentTime = 0;
 
-    const promise =
+    const result =
       audio.play();
 
-    if(
-      promise &&
-      promise.catch
-    ){
+    if(result){
 
-      promise.catch(
-        function(){}
+      result.catch(
+        function(){
+          /*
+            Audio file may not exist yet.
+            This must NEVER stop the game.
+          */
+        }
       );
 
     }
 
-  }catch(e){}
+  }catch(error){
+
+    /*
+      Audio errors are deliberately ignored.
+      The game continues normally.
+    */
+
+  }
 
 }
 
 
 /* =====================================================
-   SOUND TEST
+   SOUND BUTTON
 ===================================================== */
 
-testSoundBtn.addEventListener(
-  "click",
-  function(e){
-
-    e.preventDefault();
-
-    soundOn = true;
-
-    soundBtn.textContent =
-      "🔊 SES AÇIK";
-
-    playSound("click");
-
-    setTimeout(
-      function(){
-
-        playSound("correct");
-
-      },
-      250
-    );
-
-  }
-);
-
-
-/* =====================================================
-   SOUND TOGGLE
-===================================================== */
-
-soundBtn.addEventListener(
+soundButton.addEventListener(
   "click",
   function(){
 
-    soundOn = !soundOn;
+    soundEnabled =
+      !soundEnabled;
 
-    soundBtn.textContent =
-      soundOn
+    soundButton.textContent =
+      soundEnabled
       ? "🔊 SES AÇIK"
       : "🔇 SES KAPALI";
 
@@ -1476,7 +1156,7 @@ soundBtn.addEventListener(
 
 
 /* =====================================================
-   RANDOM
+   RANDOM NUMBER
 ===================================================== */
 
 function randomNumber(min,max){
@@ -1490,27 +1170,79 @@ function randomNumber(min,max){
 
 
 /* =====================================================
+   SHUFFLE
+===================================================== */
+
+function shuffle(array){
+
+  for(
+    let i=array.length-1;
+    i>0;
+    i--
+  ){
+
+    const j =
+      Math.floor(
+        Math.random() *
+        (i+1)
+      );
+
+    const temp =
+      array[i];
+
+    array[i] =
+      array[j];
+
+    array[j] =
+      temp;
+
+  }
+
+  return array;
+
+}
+
+
+/* =====================================================
    FISH SVG
 ===================================================== */
 
-const FISH_COLORS = [
+const colors = [
 
-  ["#e85c3b","#8d251d","#ffab8b"],
+  {
+    body:"#e55b3d",
+    dark:"#8d271c",
+    light:"#ffad91"
+  },
 
-  ["#e6b72f","#8b6512","#fff09b"],
+  {
+    body:"#e6b72e",
+    dark:"#896313",
+    light:"#fff09c"
+  },
 
-  ["#4ba7d8","#175c89","#a5eaff"],
+  {
+    body:"#45a8d7",
+    dark:"#185d89",
+    light:"#a9eaff"
+  },
 
-  ["#4a9c71","#175b43","#8ee2b3"],
+  {
+    body:"#4d9e72",
+    dark:"#1d5b43",
+    light:"#92e5b9"
+  },
 
-  ["#b95b9e","#692b59","#efa9db"],
-
-  ["#e67b32","#873b17","#ffc17c"]
+  {
+    body:"#b65b9b",
+    dark:"#662c56",
+    light:"#eda9d8"
+  }
 
 ];
 
 
-function fishSVG(colors){
+function createFishSVG(color){
 
   return `
 
@@ -1527,34 +1259,17 @@ function fishSVG(colors){
 
         <stop
           offset="0"
-          stop-color="${colors[2]}"/>
+          stop-color="${color.light}"/>
 
         <stop
-          offset=".42"
-          stop-color="${colors[0]}"/>
+          offset=".4"
+          stop-color="${color.body}"/>
 
         <stop
           offset="1"
-          stop-color="${colors[1]}"/>
+          stop-color="${color.dark}"/>
 
       </radialGradient>
-
-      <linearGradient
-        id="finGradient"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="1">
-
-        <stop
-          offset="0"
-          stop-color="${colors[2]}"/>
-
-        <stop
-          offset="1"
-          stop-color="${colors[1]}"/>
-
-      </linearGradient>
 
     </defs>
 
@@ -1563,14 +1278,14 @@ function fishSVG(colors){
 
     <path
       d="
-        M48 60
-        C27 35 9 25 5 24
-        C12 46 12 75 5 96
-        C29 91 44 77 55 65
+        M50 60
+        C28 38 12 27 5 25
+        C12 47 12 73 5 95
+        C27 91 44 78 55 65
         Z
       "
-      fill="url(#finGradient)"
-      stroke="${colors[1]}"
+      fill="${color.body}"
+      stroke="${color.dark}"
       stroke-width="3"
     />
 
@@ -1580,10 +1295,10 @@ function fishSVG(colors){
     <ellipse
       cx="108"
       cy="60"
-      rx="77"
+      rx="76"
       ry="42"
       fill="url(#fishGradient)"
-      stroke="${colors[1]}"
+      stroke="${color.dark}"
       stroke-width="3"
     />
 
@@ -1592,13 +1307,13 @@ function fishSVG(colors){
 
     <path
       d="
-        M82 24
-        C90 4 108 5 126 28
-        C109 23 95 25 82 24
+        M80 25
+        C91 4 108 6 126 28
+        C108 23 94 25 80 25
         Z
       "
-      fill="url(#finGradient)"
-      stroke="${colors[1]}"
+      fill="${color.light}"
+      stroke="${color.dark}"
       stroke-width="3"
     />
 
@@ -1607,29 +1322,13 @@ function fishSVG(colors){
 
     <path
       d="
-        M91 94
-        C99 112 115 112 126 91
+        M92 94
+        C100 111 115 110 126 91
         Z
       "
-      fill="url(#finGradient)"
-      stroke="${colors[1]}"
+      fill="${color.light}"
+      stroke="${color.dark}"
       stroke-width="3"
-    />
-
-
-    <!-- SIDE FIN -->
-
-    <path
-      d="
-        M105 68
-        C124 79 131 91 117 97
-        C103 88 98 77 105 68
-        Z
-      "
-      fill="${colors[2]}"
-      opacity=".65"
-      stroke="${colors[1]}"
-      stroke-width="2"
     />
 
 
@@ -1640,16 +1339,15 @@ function fishSVG(colors){
       stroke="#ffffff55"
       stroke-width="2">
 
-      <path d="M67 44 Q77 54 67 64"/>
-      <path d="M80 42 Q90 52 80 62"/>
-      <path d="M93 40 Q103 50 93 60"/>
-      <path d="M106 40 Q116 50 106 60"/>
-      <path d="M119 42 Q129 52 119 62"/>
+      <path d="M65 44 Q75 54 65 64"/>
+      <path d="M78 42 Q88 52 78 62"/>
+      <path d="M91 40 Q101 50 91 60"/>
+      <path d="M104 40 Q114 50 104 60"/>
 
-      <path d="M74 60 Q84 70 74 80"/>
-      <path d="M87 59 Q97 69 87 79"/>
-      <path d="M100 59 Q110 69 100 79"/>
-      <path d="M113 60 Q123 70 113 80"/>
+      <path d="M72 60 Q82 70 72 80"/>
+      <path d="M85 59 Q95 69 85 79"/>
+      <path d="M98 59 Q108 69 98 79"/>
+      <path d="M111 60 Q121 70 111 80"/>
 
     </g>
 
@@ -1661,7 +1359,7 @@ function fishSVG(colors){
       cy="47"
       r="13"
       fill="white"
-      stroke="${colors[1]}"
+      stroke="${color.dark}"
       stroke-width="3"
     />
 
@@ -1688,21 +1386,21 @@ function fishSVG(colors){
         Q189 67 179 73
       "
       fill="none"
-      stroke="${colors[1]}"
+      stroke="${color.dark}"
       stroke-width="3"
       stroke-linecap="round"
     />
 
 
-    <!-- BODY HIGHLIGHT -->
+    <!-- HIGHLIGHT -->
 
     <ellipse
-      cx="85"
+      cx="83"
       cy="38"
       rx="20"
       ry="7"
       fill="#ffffff44"
-      transform="rotate(-12 85 38)"
+      transform="rotate(-12 83 38)"
     />
 
   </svg>
@@ -1718,292 +1416,155 @@ function fishSVG(colors){
 
 function clearFish(){
 
-  sea
-    .querySelectorAll(".fish")
-    .forEach(
-      function(fish){
+  const fishList =
+    sea.querySelectorAll(".fish");
 
-        fish.remove();
+  fishList.forEach(
+    function(fish){
 
-      }
-    );
+      fish.remove();
 
-}
-
-
-/* =====================================================
-   CREATE BUBBLES
-===================================================== */
-
-function createBubbles(){
-
-  for(
-    let i=0;
-    i<20;
-    i++
-  ){
-
-    const bubble =
-      document.createElement("i");
-
-    bubble.className =
-      "bubble";
-
-    const size =
-      randomNumber(7,21);
-
-    bubble.style.width =
-      size+"px";
-
-    bubble.style.height =
-      size+"px";
-
-    bubble.style.left =
-      randomNumber(1,98)+"%";
-
-    bubble.style.top =
-      randomNumber(40,100)+"%";
-
-    bubble.style.animationDelay =
-      "-"+randomNumber(1,9)+"s";
-
-    sea.appendChild(
-      bubble
-    );
-
-  }
+    }
+  );
 
 }
 
 
 /* =====================================================
-   CREATE FISH
+   CREATE EXACTLY 5 FISH
 ===================================================== */
 
 function createFish(){
 
   clearFish();
 
+
   /*
-    إنشاء 5 أرقام فقط:
-    الرقم المطلوب + 4 أرقام عشوائية مختلفة
+    The target is ALWAYS included.
   */
 
   const numbers = [target];
 
-  while(numbers.length < 5){
-
-    const n = randomNumber(1,10);
-
-    if(!numbers.includes(n)){
-      numbers.push(n);
-    }
-
-  }
-
 
   /*
-    خلط أماكن الأرقام
+    Add four DIFFERENT numbers.
+    No duplicate numbers.
   */
 
-  numbers.sort(
-    function(){
-      return Math.random() - 0.5;
-    }
-  );
-
-
-  /*
-    إنشاء 5 سمكات
-  */
-
-  numbers.forEach(
-    function(number,index){
-
-      const fish =
-        document.createElement("div");
-
-      fish.className = "fish";
-
-
-      /*
-        ألوان مختلفة للسمكات
-      */
-
-      const colors =
-        FISH_COLORS[
-          index % FISH_COLORS.length
-        ];
-
-
-      /*
-        السمكة + الرقم
-        الرقم داخل جسم السمكة وليس فوقها
-      */
-
-      fish.innerHTML =
-        fishSVG(colors)
-        +
-        `
-        <div class="fishNumber">
-          ${number}
-        </div>
-        `;
-
-
-      fish.dataset.number =
-        number;
-
-
-      /*
-        توزيع السمكات في البحر
-      */
-
-      fish.style.left =
-        randomNumber(4,84) + "%";
-
-      fish.style.top =
-        randomNumber(12,82) + "%";
-
-
-      /*
-        لمس / ضغط السمكة
-      */
-
-      fish.addEventListener(
-        "pointerdown",
-        function(e){
-
-          e.preventDefault();
-
-          catchFish(fish);
-
-        }
-      );
-
-
-      sea.appendChild(
-        fish
-      );
-
-
-      /*
-        حركة السمكة
-      */
-
-      moveFish(fish);
-
-    }
-  );
-
-}
-  clearFish();
-
-  const numbers = [];
-
-  /*
-    Every number from 1 to 10
-    is guaranteed to exist.
-  */
-
-  for(
-    let i=1;
-    i<=10;
-    i++
+  while(
+    numbers.length <
+    GAME_CONFIG.fishCount
   ){
 
-    numbers.push(i);
+    const number =
+      randomNumber(
+        GAME_CONFIG.minNumber,
+        GAME_CONFIG.maxNumber
+      );
+
+
+    if(
+      numbers.indexOf(number) === -1
+    ){
+
+      numbers.push(number);
+
+    }
 
   }
 
 
   /*
-    Add four extra fish.
+    Shuffle the five numbers.
+  */
+
+  shuffle(numbers);
+
+
+  /*
+    Create the five fish.
   */
 
   for(
     let i=0;
-    i<4;
+    i<numbers.length;
     i++
   ){
 
-    numbers.push(
-      randomNumber(1,10)
+    const number =
+      numbers[i];
+
+
+    const fish =
+      document.createElement("div");
+
+    fish.className =
+      "fish";
+
+
+    const color =
+      colors[
+        i % colors.length
+      ];
+
+
+    fish.innerHTML =
+      createFishSVG(color)
+      +
+      `
+      <div class="fishNumber">
+        ${number}
+      </div>
+      `;
+
+
+    /*
+      Store the number directly
+      on the fish.
+    */
+
+    fish.dataset.number =
+      String(number);
+
+
+    /*
+      Random starting position.
+    */
+
+    fish.style.left =
+      randomNumber(5,82) + "%";
+
+    fish.style.top =
+      randomNumber(8,82) + "%";
+
+
+    /*
+      Clicking anywhere on the fish
+      catches it.
+    */
+
+    fish.addEventListener(
+      "pointerdown",
+      function(event){
+
+        event.preventDefault();
+
+        catchFish(fish);
+
+      }
     );
 
+
+    sea.appendChild(fish);
+
+
+    /*
+      Start movement.
+    */
+
+    moveFish(fish);
+
   }
-
-
-  /*
-    Shuffle.
-  */
-
-  numbers.sort(
-    function(){
-      return Math.random()-.5;
-    }
-  );
-
-
-  numbers.forEach(
-    function(number,index){
-
-      const fish =
-        document.createElement("div");
-
-      fish.className =
-        "fish";
-
-
-      const colors =
-        FISH_COLORS[
-          index %
-          FISH_COLORS.length
-        ];
-
-
-      fish.innerHTML =
-        fishSVG(colors)
-        +
-        `
-        <div class="fishNumber">
-          ${number}
-        </div>
-        `;
-
-
-      fish.dataset.number =
-        number;
-
-
-      fish.style.left =
-        randomNumber(3,85)+"%";
-
-      fish.style.top =
-        randomNumber(8,82)+"%";
-
-
-      fish.addEventListener(
-        "pointerdown",
-        function(e){
-
-          e.preventDefault();
-
-          catchFish(fish);
-
-        }
-      );
-
-
-      sea.appendChild(
-        fish
-      );
-
-
-      moveFish(fish);
-
-    }
-  );
 
 }
 
@@ -2024,15 +1585,11 @@ function moveFish(fish){
   }
 
 
-  const duration =
-    randomNumber(4500,7500);
-
-
   fish.style.left =
-    randomNumber(3,86)+"%";
+    randomNumber(5,84) + "%";
 
   fish.style.top =
-    randomNumber(8,84)+"%";
+    randomNumber(8,82) + "%";
 
 
   setTimeout(
@@ -2041,49 +1598,8 @@ function moveFish(fish){
       moveFish(fish);
 
     },
-    duration
+    randomNumber(4500,7000)
   );
-
-}
-
-
-/* =====================================================
-   START GAME
-===================================================== */
-
-function startGame(){
-
-  /*
-    THIS FUNCTION IS DIRECTLY CONNECTED
-    TO THE START BUTTON.
-  */
-
-  startOverlay.style.display =
-    "none";
-
-
-  score = 0;
-  round = 1;
-  streak = 0;
-
-  playing = true;
-  locked = false;
-
-
-  scoreEl.textContent =
-    "0";
-
-  roundEl.textContent =
-    "1";
-
-  streakEl.textContent =
-    "0";
-
-
-  playSound("click");
-
-
-  startRound();
 
 }
 
@@ -2096,23 +1612,38 @@ function startRound(){
 
   locked = false;
 
+
   feedback.classList.remove(
     "show"
   );
+
 
   net.style.display =
     "none";
 
 
+  /*
+    Select target.
+  */
+
   target =
-    randomNumber(1,10);
+    randomNumber(
+      GAME_CONFIG.minNumber,
+      GAME_CONFIG.maxNumber
+    );
 
 
-  targetEl.textContent =
+  targetElement.textContent =
     target;
 
 
+  /*
+    IMPORTANT:
+    exactly five fish.
+  */
+
   createFish();
+
 
   startTimer();
 
@@ -2120,62 +1651,61 @@ function startRound(){
 
 
 /* =====================================================
-   TIMER
+   START TIMER
 ===================================================== */
 
 function startTimer(){
 
-  clearInterval(timer);
+  clearInterval(timerId);
+
 
   timeLeft =
-    ROUND_SECONDS;
+    GAME_CONFIG.secondsPerRound;
 
 
   timerText.textContent =
     "60";
 
-  timebar.style.width =
+
+  timeBar.style.width =
     "100%";
 
 
-  timer =
+  timerId =
     setInterval(
       function(){
 
-        timeLeft -= .1;
+        timeLeft -= 0.1;
 
 
-        const percent =
-          Math.max(
-            0,
-            timeLeft /
-            ROUND_SECONDS *
-            100
-          );
-
-
-        timebar.style.width =
-          percent+"%";
+        if(timeLeft < 0){
+          timeLeft = 0;
+        }
 
 
         timerText.textContent =
-          Math.ceil(
-            Math.max(
-              0,
-              timeLeft
-            )
+          String(
+            Math.ceil(timeLeft)
           );
+
+
+        timeBar.style.width =
+          (
+            timeLeft /
+            GAME_CONFIG.secondsPerRound *
+            100
+          )
+          +
+          "%";
 
 
         if(timeLeft <= 0){
 
-          clearInterval(timer);
+          clearInterval(
+            timerId
+          );
 
-          if(!locked){
-
-            timeExpired();
-
-          }
+          timeExpired();
 
         }
 
@@ -2192,11 +1722,21 @@ function startTimer(){
 
 function timeExpired(){
 
+  if(
+    locked ||
+    !playing
+  ){
+
+    return;
+
+  }
+
+
   locked = true;
 
   streak = 0;
 
-  streakEl.textContent =
+  streakElement.textContent =
     "0";
 
 
@@ -2216,7 +1756,7 @@ function timeExpired(){
       nextRound();
 
     },
-    1600
+    1500
   );
 
 }
@@ -2238,26 +1778,16 @@ function catchFish(fish){
   }
 
 
-  /*
-    Click sound.
-  */
-
   playSound("click");
 
 
   /*
-    Put small net over fish.
+    Position the small net
+    over the selected fish.
   */
 
   const rect =
     fish.getBoundingClientRect();
-
-
-  const netWidth =
-    net.offsetWidth;
-
-  const netHeight =
-    net.offsetHeight;
 
 
   net.style.display =
@@ -2267,17 +1797,21 @@ function catchFish(fish){
   net.style.left =
     (
       rect.left +
-      rect.width/2 -
-      netWidth/2
-    )+"px";
+      rect.width / 2 -
+      net.offsetWidth / 2
+    )
+    +
+    "px";
 
 
   net.style.top =
     (
       rect.top +
-      rect.height/2 -
-      netHeight/2
-    )+"px";
+      rect.height / 2 -
+      net.offsetHeight / 2
+    )
+    +
+    "px";
 
 
   const value =
@@ -2286,31 +1820,33 @@ function catchFish(fish){
     );
 
 
-  /* ===================================================
+  /* =========================
      CORRECT
-  =================================================== */
+  ========================= */
 
   if(value === target){
 
     locked = true;
 
-    clearInterval(timer);
+    clearInterval(
+      timerId
+    );
 
 
-    const gained =
+    const points =
       10 +
       streak * 2;
 
 
-    score += gained;
+    score += points;
 
-    streak++;
+    streak += 1;
 
 
-    scoreEl.textContent =
+    scoreElement.textContent =
       score;
 
-    streakEl.textContent =
+    streakElement.textContent =
       streak;
 
 
@@ -2325,8 +1861,10 @@ function catchFish(fish){
     showFeedback(
       "🎉",
       "AFERİN!",
-      "Doğru sayıyı yakaladın! +"+
-      gained+
+      "Doğru sayıyı yakaladın! +"
+      +
+      points
+      +
       " puan"
     );
 
@@ -2337,7 +1875,7 @@ function catchFish(fish){
         nextRound();
 
       },
-      1500
+      1400
     );
 
 
@@ -2346,9 +1884,9 @@ function catchFish(fish){
   }
 
 
-  /* ===================================================
+  /* =========================
      WRONG
-  =================================================== */
+  ========================= */
 
   fish.classList.add(
     "wrong"
@@ -2357,7 +1895,7 @@ function catchFish(fish){
 
   streak = 0;
 
-  streakEl.textContent =
+  streakElement.textContent =
     "0";
 
 
@@ -2367,8 +1905,10 @@ function catchFish(fish){
   showFeedback(
     "🐟",
     "Tekrar Dene!",
-    "Bu balıkta "+
-    value+
+    "Bu balıkta "
+    +
+    value
+    +
     " yazıyor."
   );
 
@@ -2385,7 +1925,7 @@ function catchFish(fish){
       );
 
     },
-    1000
+    900
   );
 
 }
@@ -2427,13 +1967,14 @@ function nextRound(){
     "show"
   );
 
-  clearInterval(timer);
-
   net.style.display =
     "none";
 
 
-  if(round >= 10){
+  if(
+    round >=
+    GAME_CONFIG.rounds
+  ){
 
     finishGame();
 
@@ -2442,9 +1983,10 @@ function nextRound(){
   }
 
 
-  round++;
+  round += 1;
 
-  roundEl.textContent =
+
+  roundElement.textContent =
     round;
 
 
@@ -2454,23 +1996,26 @@ function nextRound(){
 
 
 /* =====================================================
-   FINISH
+   FINISH GAME
 ===================================================== */
 
 function finishGame(){
 
   playing = false;
 
-  clearInterval(timer);
+  clearInterval(
+    timerId
+  );
 
   clearFish();
-
 
   showFeedback(
     "🏆",
     "HARİKA!",
-    "Oyunu "+
-    score+
+    "Oyunu "
+    +
+    score
+    +
     " puanla tamamladın!"
   );
 
@@ -2482,7 +2027,8 @@ function finishGame(){
         "show"
       );
 
-      startOverlay.style.display =
+
+      startScreen.style.display =
         "flex";
 
     },
@@ -2493,14 +2039,60 @@ function finishGame(){
 
 
 /* =====================================================
+   START GAME
+===================================================== */
+
+function startGame(){
+
+  /*
+    This is intentionally simple.
+    No async code.
+    No speech.
+    No external dependency.
+  */
+
+  score = 0;
+
+  round = 1;
+
+  streak = 0;
+
+  playing = true;
+
+  locked = false;
+
+
+  scoreElement.textContent =
+    "0";
+
+  roundElement.textContent =
+    "1";
+
+  streakElement.textContent =
+    "0";
+
+
+  startScreen.style.display =
+    "none";
+
+
+  playSound("click");
+
+
+  startRound();
+
+}
+
+
+/* =====================================================
    START BUTTON
 ===================================================== */
 
-startBtn.addEventListener(
+startButton.addEventListener(
   "click",
-  function(e){
+  function(event){
 
-    e.preventDefault();
+    event.preventDefault();
 
     startGame();
 
@@ -2509,105 +2101,49 @@ startBtn.addEventListener(
 
 
 /* =====================================================
-   INITIALIZATION
-===================================================== */
-
-createBubbles();
-
-
-/* =====================================================
-   MOUSE NET
+   NET FOLLOWS POINTER
 ===================================================== */
 
 document.addEventListener(
   "pointermove",
-  function(e){
+  function(event){
 
     if(!playing){
-
       return;
-
     }
 
-
-    /*
-      Do not show the net until
-      the child actually moves.
-    */
 
     net.style.display =
       "block";
 
 
-    const w =
-      net.offsetWidth;
-
-    const h =
-      net.offsetHeight;
-
-
     net.style.left =
       (
-        e.clientX -
-        w/2
-      )+"px";
+        event.clientX -
+        net.offsetWidth / 2
+      )
+      +
+      "px";
 
 
     net.style.top =
       (
-        e.clientY -
-        h/2
-      )+"px";
+        event.clientY -
+        net.offsetHeight / 2
+      )
+      +
+      "px";
 
   }
 );
 
 
 /* =====================================================
-   TOUCH SUPPORT
+   INITIAL STATE
 ===================================================== */
 
-document.addEventListener(
-  "touchmove",
-  function(e){
-
-    if(!playing) return;
-
-    const touch =
-      e.touches[0];
-
-    if(!touch) return;
-
-
-    net.style.display =
-      "block";
-
-
-    const w =
-      net.offsetWidth;
-
-    const h =
-      net.offsetHeight;
-
-
-    net.style.left =
-      (
-        touch.clientX -
-        w/2
-      )+"px";
-
-
-    net.style.top =
-      (
-        touch.clientY -
-        h/2
-      )+"px";
-
-  },
-  {
-    passive:true
-  }
-);
+startScreen.style.display =
+  "flex";
 
 </script>
 
