@@ -3,89 +3,2780 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>🎣 Sayı Avı 3D</title>
+
+<title>Çocuk Oyunları</title>
+
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif}body{background:#062544;color:#fff}
-#game{position:relative;width:100%;height:100%;overflow:hidden;background:linear-gradient(#76dcff 0 15%,#22b7e7 15% 45%,#056f9f 100%)}
-.sky{position:absolute;inset:0 0 84%;overflow:hidden}.sun{position:absolute;width:90px;height:90px;border-radius:50%;right:7%;top:18px;background:#fff1a1;box-shadow:0 0 55px #fff}.cloud{position:absolute;width:150px;height:38px;border-radius:40px;background:#fff9;left:7%;top:52px}.cloud:before,.cloud:after{content:"";position:absolute;border-radius:50%;background:#fff9}.cloud:before{width:58px;height:58px;left:22px;top:-28px}.cloud:after{width:70px;height:70px;left:70px;top:-37px}
-.hud{position:absolute;z-index:60;top:10px;left:50%;transform:translateX(-50%);width:min(900px,94%);padding:9px 15px 10px;border:2px solid #ffffffaa;border-radius:24px;background:linear-gradient(180deg,#fffffffa,#dff7ffef);color:#103650;box-shadow:0 9px 30px #003b5b55;text-align:center}.logo{font-size:clamp(23px,4vw,37px);font-weight:1000;color:#0876a8;text-shadow:0 2px 0 #fff}.mission{font-size:clamp(16px,3vw,23px);font-weight:900}.mission b{font-size:1.4em;color:#ed6337}.stats{display:flex;justify-content:center;gap:24px;font-weight:900;font-size:14px}.bar{height:7px;background:#cce8f1;border-radius:10px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#24d17e,#ffbd3b,#ff7043);transition:width .1s linear}
-.sea{position:absolute;inset:15% 0 0;overflow:hidden;background:radial-gradient(circle at 50% 15%,#8beaff33,transparent 35%),linear-gradient(#13a8dc44,#00547f44)}.wave{position:absolute;width:125%;left:-12%;height:75px;border-radius:50%;background:#ffffff12;top:4%;animation:wave 5s ease-in-out infinite alternate}.wave:nth-child(2){top:30%;opacity:.5;animation-duration:7s}.wave:nth-child(3){top:57%;opacity:.3;animation-duration:9s}@keyframes wave{to{transform:translateX(35px)}}
-.sunken{position:absolute;bottom:1%;left:5%;font-size:95px;opacity:.42;filter:drop-shadow(0 10px 8px #002c48)}.plant{position:absolute;bottom:-10px;font-size:78px;opacity:.72;filter:drop-shadow(0 8px 4px #00364d)}.p1{left:18%}.p2{right:18%}.p3{right:4%}.bubble{position:absolute;border:2px solid #fff8;border-radius:50%;opacity:.55;animation:rise 9s linear infinite}@keyframes rise{to{transform:translateY(-110vh);opacity:0}}
-/* 3D fish */
-.fish{position:absolute;width:116px;height:76px;border-radius:58% 47% 48% 57%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:1000;color:#fff;text-shadow:0 3px 3px #0008;cursor:pointer;touch-action:manipulation;user-select:none;z-index:20;box-shadow:inset -12px -12px 22px #0003,inset 9px 8px 16px #fff5,0 12px 15px #00364f66;transition:filter .15s,transform .15s;transform:rotateY(0deg);overflow:visible}.fish:before{content:"";position:absolute;left:17px;top:18px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0005;z-index:4}.fish:after{content:"";position:absolute;right:-37px;top:15px;border-top:23px solid transparent;border-bottom:23px solid transparent;border-left:42px solid var(--c);filter:drop-shadow(3px 5px 2px #00364d66)}.fish .eye{position:absolute;left:22px;top:24px;width:8px;height:8px;border-radius:50%;background:#14212b;z-index:5}.fish .fin{position:absolute;width:30px;height:26px;background:#fff4;border-radius:70% 20%;transform:rotate(35deg);left:47px;top:-12px;clip-path:polygon(0 100%,100% 0,75% 100%)}.fish .fin2{position:absolute;width:27px;height:23px;background:#0002;border-radius:70% 20%;transform:rotate(-25deg);left:48px;bottom:-10px;clip-path:polygon(0 0,100% 100%,20% 90%)}.fish .shine{position:absolute;left:40px;top:13px;width:31px;height:7px;border-radius:50%;background:#fff6;transform:rotate(-12deg)}.fish:hover{filter:brightness(1.12);transform:scale(1.07) rotate(-2deg)}.fish.good{animation:good .55s forwards}@keyframes good{45%{transform:scale(1.35) rotate(-8deg)}100%{transform:scale(0);opacity:0}}.fish.bad{animation:bad .3s}@keyframes bad{25%{margin-left:-14px}75%{margin-left:14px}}
-/* 3D fishing net */
-.net{position:absolute;z-index:45;width:120px;height:120px;pointer-events:none;display:none;transform:rotate(-18deg);filter:drop-shadow(0 10px 8px #001e3388)}.net .rim{position:absolute;inset:0;border:8px solid #dce9ee;border-radius:50%;background:linear-gradient(135deg,#fff,#899da5 42%,#f8ffff 65%,#61767d);box-shadow:inset 0 0 0 3px #667b83,0 4px 8px #001c2a88}.net .mesh{position:absolute;inset:13px;border:2px dashed #e9f7fa;border-radius:50%;background:repeating-linear-gradient(0deg,transparent 0 10px,#ffffff77 11px 12px),repeating-linear-gradient(90deg,transparent 0 10px,#ffffff77 11px 12px);clip-path:circle(50%);transform:perspective(120px) rotateX(18deg);opacity:.9}.net .handle{position:absolute;width:145px;height:17px;right:-116px;top:96px;border-radius:12px;background:linear-gradient(#b97b43,#6d3e1d 48%,#d29a5e);border:2px solid #542d16;transform:rotate(53deg);box-shadow:0 5px 6px #001c2a88}.net .grip{position:absolute;width:38px;height:22px;right:-139px;top:154px;border-radius:9px;background:linear-gradient(#26343a,#11191d);transform:rotate(53deg);box-shadow:0 5px 5px #001c2a88}
-.center{position:absolute;z-index:90;left:50%;top:54%;transform:translate(-50%,-50%);width:min(470px,91%);background:linear-gradient(180deg,#fffffff7,#e7fafff4);color:#153b52;border:2px solid #fff;border-radius:32px;padding:28px;text-align:center;box-shadow:0 20px 60px #001e3d77}.center .emoji{font-size:72px}.center h1{margin:3px 0 8px;color:#0876a8;font-size:38px}.center p{font-size:18px;line-height:1.5}.center small{display:block;margin:10px 0;color:#527082}button{border:0;border-radius:17px;padding:14px 26px;background:linear-gradient(#ff9b4e,#ed6331);color:#fff;font-size:19px;font-weight:1000;cursor:pointer;box-shadow:0 5px 0 #bd4c1c,0 8px 15px #70300a44;touch-action:manipulation}button:active{transform:translateY(3px);box-shadow:0 2px 0 #bd4c1c}.soundTest{background:linear-gradient(#3faee8,#0877ac);box-shadow:0 5px 0 #07587f;margin-left:7px}
-#feedback{position:absolute;z-index:80;left:50%;top:48%;transform:translate(-50%,-50%) scale(.8);opacity:0;pointer-events:none;background:linear-gradient(180deg,#fff,#e9faff);color:#126c91;padding:20px 28px;border-radius:25px;text-align:center;box-shadow:0 15px 45px #00294d66;transition:.2s;border:2px solid #fff}.show{opacity:1!important;transform:translate(-50%,-50%) scale(1)!important}.feedbackIcon{font-size:50px}.feedbackTitle{font-size:29px;font-weight:1000}.choice{display:inline-block;margin-top:5px}
-.soundBadge{position:absolute;right:13px;bottom:13px;z-index:65;background:#ffffffdd;color:#17445b;border-radius:16px;padding:8px 11px;font-weight:900;box-shadow:0 4px 12px #00344d55;cursor:pointer}
-@media(max-width:600px){.fish{width:82px;height:56px;font-size:25px}.fish:after{right:-27px;top:11px;border-top-width:18px;border-bottom-width:18px;border-left-width:31px}.fish:before{left:12px;top:13px;width:14px;height:14px}.fish .eye{left:17px;top:18px;width:6px;height:6px}.net{width:90px;height:90px}.net .handle{width:110px;right:-91px;top:73px}.net .grip{right:-110px;top:118px}.hud{top:5px;padding:7px 9px}.stats{gap:11px;font-size:11px}.center{padding:22px}.center .emoji{font-size:58px}.center h1{font-size:31px}.center p{font-size:16px}}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#043d62;
+  color:#fff;
+}
+
+button{
+  font-family:inherit;
+}
+
+/* =========================================================
+   MAIN APP
+========================================================= */
+
+#app{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+}
+
+.screen.active{
+  display:block;
+}
+
+
+/* =========================================================
+   GAME BACKGROUND
+========================================================= */
+
+#gameScreen{
+  background:
+    radial-gradient(
+      circle at 50% 5%,
+      rgba(255,255,255,.32),
+      transparent 25%
+    ),
+    linear-gradient(
+      180deg,
+      #52d5ef 0%,
+      #159dce 25%,
+      #0877a5 55%,
+      #034f72 100%
+    );
+}
+
+.sun{
+  position:absolute;
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  right:7%;
+  top:20px;
+  background:#fff3a8;
+  box-shadow:
+    0 0 30px #fff,
+    0 0 70px rgba(255,255,190,.7);
+}
+
+.cloud{
+  position:absolute;
+  width:160px;
+  height:40px;
+  left:5%;
+  top:55px;
+  background:rgba(255,255,255,.65);
+  border-radius:40px;
+}
+
+.cloud:before,
+.cloud:after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.65);
+  border-radius:50%;
+}
+
+.cloud:before{
+  width:65px;
+  height:65px;
+  left:20px;
+  top:-32px;
+}
+
+.cloud:after{
+  width:75px;
+  height:75px;
+  left:75px;
+  top:-42px;
+}
+
+
+/* =========================================================
+   SEA
+========================================================= */
+
+#sea{
+  position:absolute;
+  inset:14% 0 0;
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 10%,
+      rgba(170,245,255,.45),
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(15,190,225,.9),
+      rgba(2,85,121,.98)
+    );
+}
+
+.lightRay{
+  position:absolute;
+  top:-10%;
+  width:130px;
+  height:115%;
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.20),
+    transparent
+  );
+  transform:rotate(14deg);
+  filter:blur(5px);
+  opacity:.35;
+}
+
+.ray1{
+  left:18%;
+}
+
+.ray2{
+  left:48%;
+  transform:rotate(-10deg);
+  opacity:.25;
+}
+
+.ray3{
+  right:15%;
+  transform:rotate(18deg);
+  opacity:.20;
+}
+
+.seabed{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:28%;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      #d8c391,
+      #a58c5f 45%,
+      #725c3e 100%
+    );
+
+  border-radius:50% 50% 0 0 / 20% 20% 0 0;
+}
+
+.rock{
+  position:absolute;
+  bottom:8%;
+  width:110px;
+  height:65px;
+  border-radius:55% 45% 40% 50%;
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #7d8d8b,
+      #3e5558 55%,
+      #1f343c
+    );
+  box-shadow:0 12px 15px rgba(0,0,0,.3);
+}
+
+.rock1{
+  left:5%;
+}
+
+.rock2{
+  right:7%;
+  width:140px;
+}
+
+.seaweed{
+  position:absolute;
+  bottom:12%;
+  width:45px;
+  height:150px;
+  border-left:9px solid #1b8b5b;
+  border-radius:50%;
+  transform:rotate(-8deg);
+  filter:drop-shadow(4px 4px 3px rgba(0,0,0,.25));
+}
+
+.seaweed:before,
+.seaweed:after{
+  content:"";
+  position:absolute;
+  width:25px;
+  height:130px;
+  border-left:7px solid #39ad67;
+  border-radius:50%;
+}
+
+.seaweed:before{
+  left:15px;
+  transform:rotate(15deg);
+}
+
+.seaweed:after{
+  left:-15px;
+  transform:rotate(-18deg);
+}
+
+.weed1{
+  left:14%;
+}
+
+.weed2{
+  right:18%;
+  transform:scale(1.2) rotate(8deg);
+}
+
+.weed3{
+  right:4%;
+  transform:scale(.8) rotate(-15deg);
+}
+
+
+/* =========================================================
+   BUBBLES
+========================================================= */
+
+.bubble{
+  position:absolute;
+  border:2px solid rgba(255,255,255,.65);
+  border-radius:50%;
+  opacity:.55;
+  animation:bubbleRise 10s linear infinite;
+}
+
+@keyframes bubbleRise{
+  from{
+    transform:translateY(0);
+    opacity:.55;
+  }
+
+  to{
+    transform:translateY(-110vh);
+    opacity:0;
+  }
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+#hud{
+  position:absolute;
+  z-index:100;
+  top:8px;
+  left:50%;
+  transform:translateX(-50%);
+
+  width:min(1050px,96%);
+
+  padding:9px 14px;
+
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.97),
+      rgba(220,248,255,.95)
+    );
+
+  color:#123d55;
+
+  border:2px solid rgba(255,255,255,.9);
+
+  box-shadow:
+    0 8px 30px rgba(0,40,70,.35);
+}
+
+.hudTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.logo{
+  font-size:clamp(21px,3.5vw,34px);
+  font-weight:1000;
+  color:#0875a5;
+  text-shadow:0 2px 0 white;
+}
+
+.stats{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  font-size:14px;
+  font-weight:900;
+}
+
+.soundBtn{
+  border:0;
+  border-radius:13px;
+  background:#0876a8;
+  color:#fff;
+  padding:9px 13px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   MISSION / TARGET
+========================================================= */
+
+#mission{
+  position:absolute;
+  z-index:95;
+
+  top:94px;
+  left:50%;
+  transform:translateX(-50%);
+
+  width:min(390px,88%);
+
+  background:
+    linear-gradient(
+      180deg,
+      #9a632e,
+      #714319
+    );
+
+  color:#fff;
+
+  border:4px solid #e4b66a;
+
+  border-radius:20px;
+
+  padding:10px 16px;
+
+  text-align:center;
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.35);
+}
+
+.missionTitle{
+  font-size:clamp(14px,3vw,19px);
+  font-weight:900;
+}
+
+#target{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-left:7px;
+
+  width:55px;
+  height:55px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #fff,
+      #d9f4ff 25%,
+      #46aee0 70%,
+      #08628d
+    );
+
+  color:#083f61;
+
+  font-size:35px;
+  font-weight:1000;
+
+  border:4px solid white;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,.35);
+}
+
+.timerWrap{
+  margin-top:7px;
+}
+
+.timerText{
+  font-size:13px;
+  font-weight:900;
+}
+
+.timebar{
+  width:100%;
+  height:9px;
+  margin-top:4px;
+
+  background:#234a5b;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+#timebar{
+  display:block;
+  width:100%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #29d478,
+      #a8dc38,
+      #ffc32e
+    );
+
+  transition:width .1s linear;
+}
+
+
+/* =========================================================
+   REALISTIC SVG FISH
+========================================================= */
+
+.fish{
+  position:absolute;
+
+  width:145px;
+  height:105px;
+
+  z-index:30;
+
+  cursor:pointer;
+  touch-action:manipulation;
+
+  user-select:none;
+
+  transition:
+    left 4s linear,
+    top 4s ease-in-out,
+    transform .2s;
+
+  filter:
+    drop-shadow(0 9px 7px rgba(0,25,40,.45));
+}
+
+.fish svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+.fishNumber{
+  position:absolute;
+
+  left:50%;
+  top:51%;
+
+  transform:translate(-50%,-50%);
+
+  width:38px;
+  height:38px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #fff,
+      #eef8ff 55%,
+      #bdd8e8
+    );
+
+  border:3px solid white;
+
+  color:#123d55;
+
+  font-size:25px;
+  font-weight:1000;
+
+  text-shadow:none;
+
+  box-shadow:
+    0 3px 7px rgba(0,0,0,.4);
+}
+
+.fish:hover{
+  transform:scale(1.08);
+}
+
+.fish.good{
+  animation:caught .65s forwards;
+}
+
+@keyframes caught{
+  0%{
+    transform:scale(1);
+  }
+
+  35%{
+    transform:scale(1.3) rotate(-7deg);
+  }
+
+  100%{
+    transform:scale(0) rotate(25deg);
+    opacity:0;
+  }
+}
+
+.fish.bad{
+  animation:wrongFish .4s;
+}
+
+@keyframes wrongFish{
+  0%,100%{
+    transform:translateX(0);
+  }
+
+  25%{
+    transform:translateX(-16px);
+  }
+
+  75%{
+    transform:translateX(16px);
+  }
+}
+
+
+/* =========================================================
+   FISHING NET
+========================================================= */
+
+#net{
+  position:absolute;
+  z-index:80;
+
+  width:150px;
+  height:150px;
+
+  pointer-events:none;
+
+  display:none;
+
+  transform:rotate(-20deg);
+
+  filter:
+    drop-shadow(0 9px 7px rgba(0,0,0,.55));
+}
+
+.netRim{
+  position:absolute;
+  inset:0;
+
+  border:8px solid #dce8ec;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      transparent 52%,
+      rgba(255,255,255,.25)
+    );
+
+  box-shadow:
+    inset 0 0 0 3px #63747c,
+    0 5px 10px rgba(0,0,0,.45);
+}
+
+.netMesh{
+  position:absolute;
+  inset:13px;
+
+  border-radius:50%;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 10px,
+      rgba(255,255,255,.7) 11px 12px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 10px,
+      rgba(255,255,255,.7) 11px 12px
+    );
+
+  clip-path:circle(50%);
+}
+
+.netHandle{
+  position:absolute;
+
+  width:165px;
+  height:18px;
+
+  right:-135px;
+  top:112px;
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d69a5a,
+      #7b451e 50%,
+      #b87335
+    );
+
+  border:2px solid #4d2b16;
+
+  transform:rotate(52deg);
+
+  box-shadow:
+    0 5px 7px rgba(0,0,0,.5);
+}
+
+.netGrip{
+  position:absolute;
+
+  width:43px;
+  height:25px;
+
+  right:-155px;
+  top:173px;
+
+  border-radius:9px;
+
+  background:
+    linear-gradient(
+      #303e43,
+      #11191c
+    );
+
+  transform:rotate(52deg);
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+#feedback{
+  position:absolute;
+  z-index:200;
+
+  left:50%;
+  top:53%;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.85);
+
+  opacity:0;
+  pointer-events:none;
+
+  width:min(440px,88%);
+
+  background:
+    linear-gradient(
+      180deg,
+      white,
+      #e9faff
+    );
+
+  color:#11698b;
+
+  border-radius:25px;
+
+  border:3px solid white;
+
+  padding:20px;
+
+  text-align:center;
+
+  box-shadow:
+    0 18px 50px rgba(0,30,50,.5);
+
+  transition:.2s;
+}
+
+#feedback.show{
+  opacity:1;
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+}
+
+.feedbackIcon{
+  font-size:55px;
+}
+
+.feedbackTitle{
+  font-size:29px;
+  font-weight:1000;
+}
+
+.feedbackText{
+  font-size:17px;
+  margin-top:5px;
+  font-weight:700;
+}
+
+
+/* =========================================================
+   MENU / GAME SELECTOR
+========================================================= */
+
+#menuScreen{
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      #62d8f0,
+      #087da8 60%,
+      #034563
+    );
+
+  overflow:auto;
+}
+
+.menuBox{
+  width:min(900px,94%);
+  margin:40px auto;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.97),
+      rgba(228,249,255,.97)
+    );
+
+  color:#123d55;
+
+  border-radius:30px;
+
+  padding:30px;
+
+  text-align:center;
+
+  box-shadow:
+    0 20px 60px rgba(0,30,50,.45);
+}
+
+.menuLogo{
+  font-size:45px;
+  font-weight:1000;
+  color:#0876a8;
+}
+
+.menuSubtitle{
+  font-size:18px;
+  margin-bottom:25px;
+}
+
+.gamesGrid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+  gap:18px;
+}
+
+.gameCard{
+  border:3px solid #bdeafa;
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fff,
+      #eafaff
+    );
+
+  padding:20px;
+
+  box-shadow:
+    0 7px 15px rgba(0,70,100,.15);
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.gameCard:hover{
+  transform:translateY(-4px);
+  border-color:#3bbce5;
+}
+
+.gameCard.disabled{
+  opacity:.55;
+  cursor:default;
+}
+
+.gameIcon{
+  font-size:58px;
+}
+
+.gameTitle{
+  font-size:24px;
+  font-weight:1000;
+  color:#0876a8;
+}
+
+.gameDescription{
+  font-size:15px;
+  line-height:1.5;
+  color:#527082;
+}
+
+.playGame{
+  margin-top:12px;
+
+  border:0;
+  border-radius:15px;
+
+  padding:11px 22px;
+
+  background:
+    linear-gradient(
+      #ff9d52,
+      #ed6331
+    );
+
+  color:white;
+
+  font-size:17px;
+  font-weight:1000;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 4px 0 #b94c1d;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+  #hud{
+    top:4px;
+    width:98%;
+    padding:6px 8px;
+    border-radius:16px;
+  }
+
+  .hudTop{
+    gap:5px;
+  }
+
+  .logo{
+    font-size:19px;
+  }
+
+  .stats{
+    gap:7px;
+    font-size:10px;
+  }
+
+  .soundBtn{
+    padding:7px 8px;
+    font-size:11px;
+  }
+
+  /*
+    IMPORTANT:
+    Mission remains visible on mobile.
+  */
+
+  #mission{
+    top:68px;
+    width:92%;
+    padding:7px 9px;
+    border-width:3px;
+    border-radius:15px;
+  }
+
+  .missionTitle{
+    font-size:14px;
+  }
+
+  #target{
+    width:45px;
+    height:45px;
+    font-size:29px;
+  }
+
+  .fish{
+    width:105px;
+    height:78px;
+  }
+
+  .fishNumber{
+    width:31px;
+    height:31px;
+    font-size:21px;
+    border-width:2px;
+  }
+
+  #net{
+    width:105px;
+    height:105px;
+  }
+
+  .netHandle{
+    width:125px;
+    right:-102px;
+    top:80px;
+  }
+
+  .netGrip{
+    right:-118px;
+    top:125px;
+  }
+
+  #feedback{
+    top:55%;
+    padding:16px;
+  }
+
+  .feedbackIcon{
+    font-size:42px;
+  }
+
+  .feedbackTitle{
+    font-size:24px;
+  }
+
+  .feedbackText{
+    font-size:15px;
+  }
+
+  .menuBox{
+    margin:20px auto;
+    padding:20px 14px;
+  }
+
+  .menuLogo{
+    font-size:34px;
+  }
+
+  .gamesGrid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media(max-width:380px){
+
+  .logo{
+    font-size:16px;
+  }
+
+  .stats{
+    font-size:9px;
+    gap:4px;
+  }
+
+  .soundBtn{
+    font-size:9px;
+    padding:6px;
+  }
+
+  #mission{
+    top:65px;
+  }
+
+  .fish{
+    width:90px;
+    height:68px;
+  }
+}
 </style>
 </head>
+
+
 <body>
-<div id="game">
- <div class="sky"><div class="sun"></div><div class="cloud"></div></div>
- <div class="hud">
-  <div class="logo">🎣 SAYI AVI 3D</div>
-  <div class="mission">Şu sayıyı yakala: <b id="target">5</b></div>
-  <div class="stats"><span>⭐ Puan: <b id="score">0</b></span><span>🏆 Tur: <b id="round">1</b>/10</span><span>🔥 Seri: <b id="streak">0</b></span></div>
-  <div class="bar"><i id="timebar"></i></div>
- </div>
- <div id="sea" class="sea"><div class="wave"></div><div class="wave"></div><div class="wave"></div><div class="sunken">⚓</div><div class="plant p1">🌿</div><div class="plant p2">🌿</div><div class="plant p3">🪸</div></div>
- <div id="net" class="net"><div class="rim"></div><div class="mesh"></div><div class="handle"></div><div class="grip"></div></div>
- <div class="soundBadge" id="soundBtn">🔊 SES AÇIK</div>
- <div id="feedback"><div id="ficon" class="feedbackIcon">🎉</div><div id="ftitle" class="feedbackTitle">AFERİN!</div><div id="ftext"></div></div>
- <div id="menu" class="center">
-  <div class="emoji">🌊🐠🎣</div><h1>Sayı Avı</h1>
-  <p><b>Doğru balığı yakala!</b><br>Hedef sayıyı bul, 3D ağınla yakala ve puan kazan.</p>
-  <small>10 tur • Her turda 1 doğru cevap • Sesli Türkçe geri bildirim</small>
-  <button id="startBtn">Oyuna Başla 🚀</button>
-  <button id="testBtn" class="soundTest">🔊 Sesi Test Et</button>
- </div>
+
+<div id="app">
+
+
+<!-- =====================================================
+     GAME SELECTOR
+===================================================== -->
+
+<section id="menuScreen" class="screen active">
+
+  <div class="menuBox">
+
+    <div class="menuLogo">
+      🎮 ÇOCUK OYUNLARI
+    </div>
+
+    <div class="menuSubtitle">
+      Eğlenerek öğren!
+    </div>
+
+    <div id="gamesGrid" class="gamesGrid"></div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     GAME SCREEN
+===================================================== -->
+
+<section id="gameScreen" class="screen">
+
+  <div class="sun"></div>
+  <div class="cloud"></div>
+
+  <div id="hud">
+
+    <div class="hudTop">
+
+      <div class="logo">
+        🎣 SAYI AVI
+      </div>
+
+      <div class="stats">
+
+        <span>
+          ⭐ Puan:
+          <b id="score">0</b>
+        </span>
+
+        <span>
+          🏆 Tur:
+          <b id="round">1</b>/10
+        </span>
+
+        <span>
+          🔥 Seri:
+          <b id="streak">0</b>
+        </span>
+
+      </div>
+
+      <button
+        id="soundBtn"
+        class="soundBtn">
+        🔊
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- QUESTION ALWAYS VISIBLE -->
+
+  <div id="mission">
+
+    <div class="missionTitle">
+      🐟 ŞU SAYIYI YAKALA:
+    </div>
+
+    <div id="target">
+      5
+    </div>
+
+    <div class="timerWrap">
+
+      <div class="timerText">
+        Kalan süre:
+        <span id="timerText">20</span>
+        saniye
+      </div>
+
+      <div class="timebar">
+        <i id="timebar"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SEA -->
+
+  <div id="sea">
+
+    <div class="lightRay ray1"></div>
+    <div class="lightRay ray2"></div>
+    <div class="lightRay ray3"></div>
+
+    <div class="seabed"></div>
+
+    <div class="rock rock1"></div>
+    <div class="rock rock2"></div>
+
+    <div class="seaweed weed1"></div>
+    <div class="seaweed weed2"></div>
+    <div class="seaweed weed3"></div>
+
+  </div>
+
+
+  <!-- FISHING NET -->
+
+  <div id="net">
+
+    <div class="netRim"></div>
+    <div class="netMesh"></div>
+    <div class="netHandle"></div>
+    <div class="netGrip"></div>
+
+  </div>
+
+
+  <!-- FEEDBACK -->
+
+  <div id="feedback">
+
+    <div id="feedbackIcon"
+         class="feedbackIcon">
+      🎉
+    </div>
+
+    <div id="feedbackTitle"
+         class="feedbackTitle">
+      AFERİN!
+    </div>
+
+    <div id="feedbackText"
+         class="feedbackText">
+    </div>
+
+  </div>
+
+</section>
+
 </div>
+
+
 <script>
-(function(){
-var sea=document.getElementById('sea'),menu=document.getElementById('menu'),startBtn=document.getElementById('startBtn'),testBtn=document.getElementById('testBtn');
-var targetEl=document.getElementById('target'),scoreEl=document.getElementById('score'),roundEl=document.getElementById('round'),streakEl=document.getElementById('streak'),bar=document.getElementById('timebar'),net=document.getElementById('net');
-var feedback=document.getElementById('feedback'),ficon=document.getElementById('ficon'),ftitle=document.getElementById('ftitle'),ftext=document.getElementById('ftext'),soundBtn=document.getElementById('soundBtn');
-var score=0,round=1,streak=0,target=1,playing=false,locked=false,timer=null,timeLeft=0,soundOn=true,ambient=null;
-var colors=['#ffca28','#ff6fae','#43d17a','#42a5f5','#9b72cf','#ff914d','#e66cff','#19c7d9','#ef5350','#ffd43b'];
-var sounds={};
-function loadSounds(){['win','wrong','time','click','splash','success','error','sea'].forEach(function(n){var a=new Audio('sounds/'+n+'.wav');a.preload='auto';if(n==='sea'){a.loop=true;a.volume=.16}else a.volume=.85;sounds[n]=a;});}
-function play(n){if(!soundOn||!sounds[n])return;try{sounds[n].currentTime=0;var p=sounds[n].play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
-function startAmbient(){if(soundOn&&sounds.sea){sounds.sea.loop=true;sounds.sea.volume=.13;sounds.sea.play().catch(function(){});}}
-function stopAmbient(){if(sounds.sea){sounds.sea.pause();sounds.sea.currentTime=0;}}
-function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
-function clearFish(){var fs=sea.querySelectorAll('.fish');for(var i=0;i<fs.length;i++)fs[i].remove()}
-function bubbles(){for(var i=0;i<20;i++){var x=document.createElement('i');x.className='bubble';var s=rand(7,23);x.style.width=s+'px';x.style.height=s+'px';x.style.left=rand(1,98)+'%';x.style.top=rand(45,105)+'%';x.style.animationDelay=(-rand(1,10))+'s';sea.appendChild(x)}}
-function makeFish(){
- clearFish();var nums=[];for(var n=1;n<=10;n++)nums.push(n);for(var j=0;j<4;j++)nums.push(rand(1,10));nums.sort(function(){return Math.random()-.5});
- for(var i=0;i<nums.length;i++){
-  var f=document.createElement('div'),c=colors[i%colors.length];f.className='fish';f.style.setProperty('--c',c);f.style.background='linear-gradient(145deg,#fff8 0 8%, '+c+' 25%, '+c+' 70%, #0003 100%)';f.style.left=rand(2,84)+'%';f.style.top=rand(7,87)+'%';f.dataset.num=nums[i];
-  f.innerHTML='<span>'+nums[i]+'</span><i class="eye"></i><i class="fin"></i><i class="fin2"></i><i class="shine"></i>';
-  f.addEventListener('click',function(){catchFish(this)});f.addEventListener('pointerdown',function(){play('click');});sea.appendChild(f);swim(f);
- }
+
+/* =========================================================
+   APP ARCHITECTURE
+   ---------------------------------------------
+   THIS IS THE FOUNDATION FOR MANY GAMES.
+   To add another game later, add a new object here.
+========================================================= */
+
+const GAME_REGISTRY = [];
+
+
+function registerGame(game){
+
+  GAME_REGISTRY.push(game);
+
 }
-function swim(f){if(!playing||!f.parentNode)return;var ms=rand(2200,4700);f.style.transition='left '+ms+'ms linear,top '+ms+'ms ease-in-out,transform .15s';f.style.left=rand(2,86)+'%';f.style.top=rand(7,87)+'%';setTimeout(function(){swim(f)},ms)}
-function startRound(){locked=false;feedback.classList.remove('show');clearFish();target=rand(1,10);targetEl.textContent=target;makeFish();startTimer()}
-function startTimer(){clearInterval(timer);timeLeft=8;bar.style.width='100%';timer=setInterval(function(){timeLeft-=.1;bar.style.width=Math.max(0,timeLeft/8*100)+'%';if(timeLeft<=0){clearInterval(timer);if(!locked)wrongTimeout()}},100)}
-function wrongTimeout(){locked=true;streak=0;streakEl.textContent=0;play('time');play('error');showFeedback('⏰','Süre doldu!','Daha hızlı ol.');setTimeout(nextRound,1200)}
-function catchFish(f){
- if(!playing||locked)return;play('click');net.style.display='block';net.style.left=(f.offsetLeft-2)+'px';net.style.top=(f.offsetTop-20)+'px';play('splash');
- if(Number(f.dataset.num)===target){
-  locked=true;clearInterval(timer);var gained=10+streak*2;score+=gained;streak++;scoreEl.textContent=score;streakEl.textContent=streak;f.classList.add('good');play('success');setTimeout(function(){play('win')},120);showFeedback('🎉','AFERİN!','Doğru sayıyı yakaladın! +'+gained+' puan');setTimeout(nextRound,1000);
- }else{f.classList.add('bad');streak=0;streakEl.textContent=0;play('error');setTimeout(function(){play('wrong')},100);showFeedback('🐟','Tekrar dene!','Bu balıkta '+f.dataset.num+' yazıyor.');setTimeout(function(){f.classList.remove('bad');feedback.classList.remove('show')},900)}
+
+
+/* =========================================================
+   SCREEN MANAGEMENT
+========================================================= */
+
+const menuScreen =
+  document.getElementById("menuScreen");
+
+const gameScreen =
+  document.getElementById("gameScreen");
+
+
+function showScreen(screen){
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(function(s){
+      s.classList.remove("active");
+    });
+
+  screen.classList.add("active");
+
 }
-function showFeedback(ic,ti,tx){ficon.textContent=ic;ftitle.textContent=ti;ftext.textContent=tx;feedback.classList.add('show')}
-function nextRound(){feedback.classList.remove('show');clearInterval(timer);net.style.display='none';if(round>=10){finish();return}round++;roundEl.textContent=round;startRound()}
-function finish(){playing=false;clearInterval(timer);clearFish();bar.style.width='0%';stopAmbient();play('success');setTimeout(function(){play('win')},300);var stars=score>=100?'⭐⭐⭐':score>=70?'⭐⭐':'⭐';menu.innerHTML='<div class="emoji">🏆✨</div><h1>Oyun Bitti!</h1><p><b>'+score+' puan</b> topladın.</p><div style="font-size:32px">'+stars+'</div><p>Harika iş çıkardın! Tekrar oynayarak rekorunu kır.</p><button id="again">Tekrar Oyna 🔄</button>';menu.style.display='block';document.getElementById('again').addEventListener('click',startGame)}
-function startGame(){menu.style.display='none';score=0;round=1;streak=0;playing=true;scoreEl.textContent=0;roundEl.textContent=1;streakEl.textContent=0;startAmbient();startRound()}
-function testSound(){soundOn=true;soundBtn.textContent='🔊 SES AÇIK';play('click');setTimeout(function(){play('win')},150)}
-startBtn.addEventListener('click',startGame);testBtn.addEventListener('click',testSound);
-soundBtn.addEventListener('click',function(){soundOn=!soundOn;soundBtn.textContent=soundOn?'🔊 SES AÇIK':'🔇 SES KAPALI';if(soundOn)startAmbient();else stopAmbient()});
-document.addEventListener('pointermove',function(e){if(!playing)return;net.style.display='block';net.style.left=(e.clientX-60)+'px';net.style.top=(e.clientY-60)+'px'});
-document.addEventListener('touchstart',function(){if(playing)net.style.display='block'},{passive:true});
-loadSounds();bubbles();
-})();
+
+
+/* =========================================================
+   GAME MENU
+========================================================= */
+
+function renderGames(){
+
+  const grid =
+    document.getElementById("gamesGrid");
+
+  grid.innerHTML = "";
+
+  GAME_REGISTRY.forEach(function(game){
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "gameCard" +
+      (game.enabled === false
+        ? " disabled"
+        : "");
+
+    card.innerHTML = `
+
+      <div class="gameIcon">
+        ${game.icon}
+      </div>
+
+      <div class="gameTitle">
+        ${game.title}
+      </div>
+
+      <div class="gameDescription">
+        ${game.description}
+      </div>
+
+      ${
+        game.enabled === false
+        ?
+        `<div style="margin-top:12px;font-weight:900">
+          🔒 Yakında
+        </div>`
+        :
+        `<button class="playGame">
+          ▶ Oyuna Başla
+        </button>`
+      }
+
+    `;
+
+    if(game.enabled !== false){
+
+      card
+        .querySelector(".playGame")
+        .addEventListener(
+          "click",
+          function(e){
+
+            e.stopPropagation();
+
+            startRegisteredGame(game.id);
+
+          }
+        );
+
+    }
+
+    grid.appendChild(card);
+
+  });
+
+}
+
+
+/* =========================================================
+   REGISTERED GAME STARTER
+========================================================= */
+
+function startRegisteredGame(id){
+
+  const game =
+    GAME_REGISTRY.find(
+      function(g){
+        return g.id === id;
+      }
+    );
+
+  if(!game) return;
+
+  showScreen(gameScreen);
+
+  if(typeof game.start === "function"){
+    game.start();
+  }
+
+}
+
+
+/* =========================================================
+   SAYI AVI GAME
+========================================================= */
+
+registerGame({
+
+  id:"sayi-avi",
+
+  title:"Sayı Avı",
+
+  icon:"🐟🎣",
+
+  description:
+    "Doğru sayıyı taşıyan balığı bul ve ağ ile yakala.",
+
+  enabled:true,
+
+  start:startSayiAvi
+
+});
+
+
+/*
+  FUTURE GAMES CAN BE ADDED LIKE THIS:
+
+  registerGame({
+
+    id:"renk-avi",
+
+    title:"Renk Avı",
+
+    icon:"🎨",
+
+    description:
+      "Doğru renkteki nesneyi bul.",
+
+    enabled:true,
+
+    start:startRenkAvi
+
+  });
+
+*/
+
+
+/* =========================================================
+   SAYI AVI VARIABLES
+========================================================= */
+
+const sea =
+  document.getElementById("sea");
+
+const net =
+  document.getElementById("net");
+
+const targetEl =
+  document.getElementById("target");
+
+const scoreEl =
+  document.getElementById("score");
+
+const roundEl =
+  document.getElementById("round");
+
+const streakEl =
+  document.getElementById("streak");
+
+const timebar =
+  document.getElementById("timebar");
+
+const timerText =
+  document.getElementById("timerText");
+
+const feedback =
+  document.getElementById("feedback");
+
+const feedbackIcon =
+  document.getElementById("feedbackIcon");
+
+const feedbackTitle =
+  document.getElementById("feedbackTitle");
+
+const feedbackText =
+  document.getElementById("feedbackText");
+
+const soundBtn =
+  document.getElementById("soundBtn");
+
+
+let score = 0;
+
+let round = 1;
+
+let streak = 0;
+
+let target = 1;
+
+let playing = false;
+
+let locked = false;
+
+let timer = null;
+
+let timeLeft = 20;
+
+
+/*
+  CHANGE THIS NUMBER IF YOU WANT
+  MORE OR LESS TIME.
+
+  20 = 20 seconds
+*/
+
+const ROUND_SECONDS = 20;
+
+
+/* =========================================================
+   AUDIO SYSTEM
+========================================================= */
+
+let soundOn = true;
+
+let audioUnlocked = false;
+
+let audioContext = null;
+
+const sounds = {};
+
+
+const SOUND_FILES = {
+
+  win:"sounds/win.wav",
+
+  wrong:"sounds/wrong.wav",
+
+  time:"sounds/time.wav",
+
+  click:"sounds/click.wav",
+
+  splash:"sounds/splash.wav",
+
+  success:"sounds/success.wav",
+
+  error:"sounds/error.wav",
+
+  sea:"sounds/sea.wav"
+
+};
+
+
+/* =========================================================
+   AUDIO INITIALIZATION
+========================================================= */
+
+function initAudio(){
+
+  if(audioUnlocked) return;
+
+  try{
+
+    audioContext =
+      new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
+
+    if(audioContext.state === "suspended"){
+      audioContext.resume();
+    }
+
+    audioUnlocked = true;
+
+  }catch(e){
+
+    console.log(
+      "WebAudio unavailable"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD SOUND FILES
+========================================================= */
+
+function loadSounds(){
+
+  Object.keys(SOUND_FILES)
+    .forEach(function(name){
+
+      const audio =
+        new Audio(
+          SOUND_FILES[name]
+        );
+
+      audio.preload = "auto";
+
+      audio.volume =
+        name === "sea"
+        ? .12
+        : .9;
+
+      if(name === "sea"){
+        audio.loop = true;
+      }
+
+      sounds[name] = audio;
+
+    });
+
+}
+
+
+/* =========================================================
+   FALLBACK BEEP
+========================================================= */
+
+function fallbackTone(type){
+
+  if(!audioContext) return;
+
+  try{
+
+    const oscillator =
+      audioContext.createOscillator();
+
+    const gain =
+      audioContext.createGain();
+
+    oscillator.connect(gain);
+
+    gain.connect(
+      audioContext.destination
+    );
+
+    let frequency = 500;
+
+    if(type === "click"){
+      frequency = 600;
+    }
+
+    if(type === "success"){
+      frequency = 800;
+    }
+
+    if(type === "wrong"){
+      frequency = 180;
+    }
+
+    if(type === "time"){
+      frequency = 120;
+    }
+
+    oscillator.frequency.value =
+      frequency;
+
+    oscillator.type =
+      "sine";
+
+    gain.gain.setValueAtTime(
+      .001,
+      audioContext.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .15,
+      audioContext.currentTime + .02
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      audioContext.currentTime + .22
+    );
+
+    oscillator.start();
+
+    oscillator.stop(
+      audioContext.currentTime + .24
+    );
+
+  }catch(e){}
+
+}
+
+
+/* =========================================================
+   PLAY SOUND
+========================================================= */
+
+function playSound(name){
+
+  if(!soundOn) return;
+
+  initAudio();
+
+  const audio =
+    sounds[name];
+
+  if(audio){
+
+    try{
+
+      audio.currentTime = 0;
+
+      const promise =
+        audio.play();
+
+      if(promise){
+        promise.catch(function(){
+
+          fallbackTone(name);
+
+        });
+      }
+
+      return;
+
+    }catch(e){}
+
+  }
+
+  fallbackTone(name);
+
+}
+
+
+/* =========================================================
+   SEA AMBIENCE
+========================================================= */
+
+function startSeaSound(){
+
+  if(!soundOn) return;
+
+  const seaSound =
+    sounds.sea;
+
+  if(!seaSound) return;
+
+  seaSound.loop = true;
+
+  seaSound.volume = .12;
+
+  seaSound.play()
+    .catch(function(){
+
+      /* Browser may require user gesture */
+
+    });
+
+}
+
+
+function stopSeaSound(){
+
+  if(!sounds.sea) return;
+
+  sounds.sea.pause();
+
+  sounds.sea.currentTime = 0;
+
+}
+
+
+/* =========================================================
+   SOUND BUTTON
+========================================================= */
+
+soundBtn.addEventListener(
+  "click",
+  function(){
+
+    initAudio();
+
+    soundOn = !soundOn;
+
+    if(soundOn){
+
+      soundBtn.textContent =
+        "🔊";
+
+      startSeaSound();
+
+    }else{
+
+      soundBtn.textContent =
+        "🔇";
+
+      stopSeaSound();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   UNLOCK AUDIO ON FIRST TOUCH
+========================================================= */
+
+document.addEventListener(
+  "pointerdown",
+  function(){
+
+    initAudio();
+
+  },
+  {
+    once:false,
+    passive:true
+  }
+);
+
+
+/* =========================================================
+   REALISTIC FISH SVG
+========================================================= */
+
+const FISH_TYPES = [
+
+  {
+    body:"#d85a35",
+    dark:"#8c241b",
+    light:"#ff9b72"
+  },
+
+  {
+    body:"#e8b52e",
+    dark:"#9b6910",
+    light:"#fff09a"
+  },
+
+  {
+    body:"#4b9fd1",
+    dark:"#185b88",
+    light:"#9be5ff"
+  },
+
+  {
+    body:"#4b9a70",
+    dark:"#185b43",
+    light:"#8de0b1"
+  },
+
+  {
+    body:"#b85b9c",
+    dark:"#6c285b",
+    light:"#f0a9dd"
+  },
+
+  {
+    body:"#e77c31",
+    dark:"#8b3b15",
+    light:"#ffc078"
+  }
+
+];
+
+
+function createFishSVG(colors){
+
+  return `
+
+  <svg
+    viewBox="0 0 200 120"
+    xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+
+      <radialGradient
+        id="bodyGrad"
+        cx="32%"
+        cy="28%">
+
+        <stop
+          offset="0%"
+          stop-color="${colors.light}"/>
+
+        <stop
+          offset="38%"
+          stop-color="${colors.body}"/>
+
+        <stop
+          offset="100%"
+          stop-color="${colors.dark}"/>
+
+      </radialGradient>
+
+      <linearGradient
+        id="finGrad"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1">
+
+        <stop
+          offset="0%"
+          stop-color="${colors.light}"/>
+
+        <stop
+          offset="100%"
+          stop-color="${colors.dark}"/>
+
+      </linearGradient>
+
+    </defs>
+
+
+    <!-- tail -->
+
+    <path
+      d="
+        M42 58
+        C22 28 5 24 5 24
+        C10 45 10 72 5 96
+        C26 91 42 78 53 65
+        Z
+      "
+      fill="url(#finGrad)"
+      stroke="${colors.dark}"
+      stroke-width="3"
+    />
+
+
+    <!-- main body -->
+
+    <ellipse
+      cx="105"
+      cy="60"
+      rx="75"
+      ry="42"
+      fill="url(#bodyGrad)"
+      stroke="${colors.dark}"
+      stroke-width="3"
+    />
+
+
+    <!-- dorsal fin -->
+
+    <path
+      d="
+        M88 22
+        C91 4 108 4 124 27
+        C111 24 98 25 88 22
+        Z
+      "
+      fill="url(#finGrad)"
+      stroke="${colors.dark}"
+      stroke-width="3"
+    />
+
+
+    <!-- bottom fin -->
+
+    <path
+      d="
+        M91 94
+        C96 111 112 114 124 91
+        Z
+      "
+      fill="url(#finGrad)"
+      stroke="${colors.dark}"
+      stroke-width="3"
+    />
+
+
+    <!-- pectoral fin -->
+
+    <path
+      d="
+        M103 67
+        C123 79 130 91 116 97
+        C101 88 96 77 103 67
+        Z
+      "
+      fill="${colors.light}"
+      opacity=".7"
+      stroke="${colors.dark}"
+      stroke-width="2"
+    />
+
+
+    <!-- scales -->
+
+    <g
+      fill="none"
+      stroke="rgba(255,255,255,.25)"
+      stroke-width="2">
+
+      <path d="M70 45 Q80 55 70 65"/>
+      <path d="M83 42 Q93 52 83 62"/>
+      <path d="M96 40 Q106 50 96 60"/>
+      <path d="M109 40 Q119 50 109 60"/>
+      <path d="M122 42 Q132 52 122 62"/>
+
+      <path d="M76 61 Q86 71 76 81"/>
+      <path d="M89 60 Q99 70 89 80"/>
+      <path d="M102 59 Q112 69 102 79"/>
+      <path d="M115 60 Q125 70 115 80"/>
+
+    </g>
+
+
+    <!-- eye white -->
+
+    <circle
+      cx="157"
+      cy="47"
+      r="13"
+      fill="white"
+      stroke="${colors.dark}"
+      stroke-width="3"
+    />
+
+
+    <!-- pupil -->
+
+    <circle
+      cx="160"
+      cy="48"
+      r="7"
+      fill="#101820"
+    />
+
+    <circle
+      cx="163"
+      cy="45"
+      r="2.5"
+      fill="white"
+    />
+
+
+    <!-- mouth -->
+
+    <path
+      d="
+        M178 62
+        Q188 67 179 72
+      "
+      fill="none"
+      stroke="${colors.dark}"
+      stroke-width="3"
+      stroke-linecap="round"
+    />
+
+
+    <!-- highlight -->
+
+    <ellipse
+      cx="87"
+      cy="39"
+      rx="18"
+      ry="7"
+      fill="rgba(255,255,255,.35)"
+      transform="rotate(-12 87 39)"
+    />
+
+
+  </svg>
+
+  `;
+
+}
+
+
+/* =========================================================
+   RANDOM NUMBER
+========================================================= */
+
+function randomNumber(min,max){
+
+  return Math.floor(
+    Math.random() *
+    (max-min+1)
+  ) + min;
+
+}
+
+
+/* =========================================================
+   CLEAR FISH
+========================================================= */
+
+function clearFish(){
+
+  document
+    .querySelectorAll(".fish")
+    .forEach(function(fish){
+
+      fish.remove();
+
+    });
+
+}
+
+
+/* =========================================================
+   CREATE FISH
+========================================================= */
+
+function createFish(){
+
+  clearFish();
+
+  /*
+    1 - 10 always exist.
+    Then 4 additional random fish.
+  */
+
+  const numbers = [];
+
+  for(
+    let i=1;
+    i<=10;
+    i++
+  ){
+
+    numbers.push(i);
+
+  }
+
+  for(
+    let i=0;
+    i<4;
+    i++
+  ){
+
+    numbers.push(
+      randomNumber(1,10)
+    );
+
+  }
+
+
+  numbers.sort(
+    function(){
+      return Math.random()-.5;
+    }
+  );
+
+
+  numbers.forEach(
+    function(number,index){
+
+      const fish =
+        document.createElement("div");
+
+      fish.className =
+        "fish";
+
+      const colors =
+        FISH_TYPES[
+          index %
+          FISH_TYPES.length
+        ];
+
+
+      fish.innerHTML =
+
+        createFishSVG(colors)
+
+        +
+
+        `
+        <div class="fishNumber">
+          ${number}
+        </div>
+        `;
+
+
+      fish.dataset.number =
+        number;
+
+
+      /*
+        Keep fish away from
+        the mission box.
+      */
+
+      fish.style.left =
+        randomNumber(2,82) + "%";
+
+      fish.style.top =
+        randomNumber(20,82) + "%";
+
+
+      fish.addEventListener(
+        "pointerdown",
+        function(e){
+
+          e.preventDefault();
+
+          catchFish(fish);
+
+        }
+      );
+
+
+      sea.appendChild(fish);
+
+
+      moveFish(fish);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FISH MOVEMENT
+========================================================= */
+
+function moveFish(fish){
+
+  if(
+    !playing ||
+    !fish.parentNode
+  ){
+    return;
+  }
+
+
+  const duration =
+    randomNumber(3500,6000);
+
+
+  /*
+    Flip direction sometimes.
+  */
+
+  const direction =
+    Math.random() > .5
+    ? 1
+    : -1;
+
+
+  fish.style.transform =
+    "scaleX(" +
+    direction +
+    ")";
+
+
+  fish.style.left =
+    randomNumber(3,84) + "%";
+
+  fish.style.top =
+    randomNumber(20,84) + "%";
+
+
+  setTimeout(
+    function(){
+
+      moveFish(fish);
+
+    },
+    duration
+  );
+
+}
+
+
+/* =========================================================
+   START ROUND
+========================================================= */
+
+function startRound(){
+
+  locked = false;
+
+  feedback.classList.remove(
+    "show"
+  );
+
+  net.style.display =
+    "none";
+
+
+  target =
+    randomNumber(1,10);
+
+
+  targetEl.textContent =
+    target;
+
+
+  createFish();
+
+  startTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+  clearInterval(timer);
+
+
+  timeLeft =
+    ROUND_SECONDS;
+
+
+  timerText.textContent =
+    Math.ceil(timeLeft);
+
+
+  timebar.style.width =
+    "100%";
+
+
+  timer =
+    setInterval(
+      function(){
+
+        timeLeft -= .1;
+
+
+        const percent =
+          Math.max(
+            0,
+            timeLeft /
+            ROUND_SECONDS *
+            100
+          );
+
+
+        timebar.style.width =
+          percent + "%";
+
+
+        timerText.textContent =
+          Math.ceil(
+            Math.max(
+              0,
+              timeLeft
+            )
+          );
+
+
+        if(timeLeft <= 0){
+
+          clearInterval(timer);
+
+          if(!locked){
+
+            timeExpired();
+
+          }
+
+        }
+
+      },
+      100
+    );
+
+}
+
+
+/* =========================================================
+   TIME EXPIRED
+========================================================= */
+
+function timeExpired(){
+
+  locked = true;
+
+  streak = 0;
+
+  streakEl.textContent =
+    "0";
+
+
+  playSound("time");
+
+  showFeedback(
+    "⏰",
+    "Süre Doldu!",
+    "Tekrar deneyebilirsin."
+  );
+
+
+  setTimeout(
+    nextRound,
+    1700
+  );
+
+}
+
+
+/* =========================================================
+   CATCH FISH
+========================================================= */
+
+function catchFish(fish){
+
+  if(
+    !playing ||
+    locked
+  ){
+    return;
+  }
+
+
+  initAudio();
+
+  playSound("click");
+
+
+  /*
+    Put net over selected fish.
+  */
+
+  const rect =
+    fish.getBoundingClientRect();
+
+
+  net.style.display =
+    "block";
+
+
+  net.style.left =
+    (
+      rect.left +
+      rect.width/2 -
+      75
+    ) + "px";
+
+
+  net.style.top =
+    (
+      rect.top +
+      rect.height/2 -
+      75
+    ) + "px";
+
+
+  playSound("splash");
+
+
+  const value =
+    Number(
+      fish.dataset.number
+    );
+
+
+  /* =========================================
+     CORRECT
+  ========================================= */
+
+  if(value === target){
+
+    locked = true;
+
+    clearInterval(timer);
+
+
+    const gained =
+      10 +
+      streak * 2;
+
+
+    score += gained;
+
+    streak++;
+
+
+    scoreEl.textContent =
+      score;
+
+    streakEl.textContent =
+      streak;
+
+
+    fish.classList.add(
+      "good"
+    );
+
+
+    playSound("success");
+
+
+    setTimeout(
+      function(){
+
+        playSound("win");
+
+      },
+      150
+    );
+
+
+    showFeedback(
+      "🎉",
+      "AFERİN!",
+      "Doğru sayıyı yakaladın! +" +
+      gained +
+      " puan"
+    );
+
+
+    setTimeout(
+      nextRound,
+      1500
+    );
+
+
+    return;
+
+  }
+
+
+  /* =========================================
+     WRONG
+  ========================================= */
+
+  fish.classList.add(
+    "bad"
+  );
+
+
+  streak = 0;
+
+
+  streakEl.textContent =
+    "0";
+
+
+  playSound("wrong");
+
+
+  setTimeout(
+    function(){
+
+      playSound("error");
+
+    },
+    100
+  );
+
+
+  showFeedback(
+    "🐟",
+    "Tekrar Dene!",
+    "Bu balıkta " +
+    value +
+    " yazıyor."
+  );
+
+
+  setTimeout(
+    function(){
+
+      fish.classList.remove(
+        "bad"
+      );
+
+      feedback.classList.remove(
+        "show"
+      );
+
+    },
+    1000
+  );
+
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+function showFeedback(
+  icon,
+  title,
+  text
+){
+
+  feedbackIcon.textContent =
+    icon;
+
+  feedbackTitle.textContent =
+    title;
+
+  feedbackText.textContent =
+    text;
+
+  feedback.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================================================
+   NEXT ROUND
+========================================================= */
+
+function nextRound(){
+
+  feedback.classList.remove(
+    "show"
+  );
+
+  clearInterval(timer);
+
+  net.style.display =
+    "none";
+
+
+  if(round >= 10){
+
+    finishGame();
+
+    return;
+
+  }
+
+
+  round++;
+
+  roundEl.textContent =
+    round;
+
+
+  startRound();
+
+}
+
+
+/* =========================================================
+   FINISH GAME
+========================================================= */
+
+function finishGame(){
+
+  playing = false;
+
+  clearInterval(timer);
+
+  clearFish();
+
+  stopSeaSound();
+
+
+  showFeedback(
+    "🏆",
+    "HARİKA!",
+    "Oyunu " +
+    score +
+    " puanla tamamladın!"
+  );
+
+
+  setTimeout(
+    function(){
+
+      feedback.classList.remove(
+        "show"
+      );
+
+      showScreen(menuScreen);
+
+    },
+    2500
+  );
+
+}
+
+
+/* =========================================================
+   START SAYI AVI
+========================================================= */
+
+function startSayiAvi(){
+
+  /*
+    Unlock audio after user
+    clicked the game.
+  */
+
+  initAudio();
+
+
+  score = 0;
+
+  round = 1;
+
+  streak = 0;
+
+  playing = true;
+
+
+  scoreEl.textContent =
+    "0";
+
+  roundEl.textContent =
+    "1";
+
+  streakEl.textContent =
+    "0";
+
+
+  startSeaSound();
+
+  startRound();
+
+}
+
+
+/* =========================================================
+   BUBBLES
+========================================================= */
+
+function createBubbles(){
+
+  for(
+    let i=0;
+    i<24;
+    i++
+  ){
+
+    const bubble =
+      document.createElement("i");
+
+    bubble.className =
+      "bubble";
+
+
+    const size =
+      randomNumber(7,22);
+
+
+    bubble.style.width =
+      size + "px";
+
+    bubble.style.height =
+      size + "px";
+
+
+    bubble.style.left =
+      randomNumber(1,98) + "%";
+
+
+    bubble.style.top =
+      randomNumber(45,105) + "%";
+
+
+    bubble.style.animationDelay =
+      "-" +
+      randomNumber(1,10) +
+      "s";
+
+
+    sea.appendChild(
+      bubble
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   MOVE NET WITH POINTER
+========================================================= */
+
+document.addEventListener(
+  "pointermove",
+  function(e){
+
+    if(!playing) return;
+
+
+    net.style.display =
+      "block";
+
+
+    net.style.left =
+      (
+        e.clientX -
+        75
+      ) + "px";
+
+
+    net.style.top =
+      (
+        e.clientY -
+        75
+      ) + "px";
+
+  }
+);
+
+
+/* =========================================================
+   TOUCH
+========================================================= */
+
+document.addEventListener(
+  "touchstart",
+  function(){
+
+    if(playing){
+
+      net.style.display =
+        "block";
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+loadSounds();
+
+createBubbles();
+
+renderGames();
+
+
+/* =========================================================
+   PREVENT CONTEXT MENU DURING GAME
+========================================================= */
+
+document.addEventListener(
+  "contextmenu",
+  function(e){
+
+    if(playing){
+
+      e.preventDefault();
+
+    }
+
+  }
+);
+
 </script>
+
 </body>
 </html>
