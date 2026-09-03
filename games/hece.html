@@ -1,0 +1,43 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Hece Oyunu | ARİJ</title><style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(180deg,#e9f8ff,#fff8e9);color:#26364a}
+#hud{position:fixed;top:12px;left:50%;transform:translateX(-50%);width:min(94%,650px);display:flex;justify-content:space-between;z-index:5;font-weight:900}
+.pill{background:#fff;padding:9px 14px;border-radius:14px;box-shadow:0 5px 18px #0001}
+#watermark{position:fixed;top:57px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:900;letter-spacing:3px;color:#8da1b4;opacity:.55}
+main{width:min(94%,620px);margin:auto;padding:105px 0 25px;text-align:center}h1{font-size:clamp(28px,7vw,43px);margin:0 0 7px;color:#2874c6}
+.instruction{font-size:clamp(18px,5vw,25px);font-weight:900;margin-bottom:17px}
+.picture{width:min(45vw,190px);height:min(45vw,190px);margin:0 auto 18px;background:#fff;border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:clamp(75px,20vw,120px);box-shadow:0 12px 35px #0001}
+#message{height:35px;margin-top:17px;font-size:21px;font-weight:900}
+#startScreen{position:fixed;inset:0;background:linear-gradient(180deg,#e9f8ff,#fff8e9);display:flex;align-items:center;justify-content:center;z-index:20;padding:20px}
+.startBox{width:min(92%,430px);background:#fff;border-radius:28px;padding:30px 22px;text-align:center;box-shadow:0 18px 55px #0002}
+.startLogo{font-size:42px;font-weight:900;color:#2874c6}.startBox h2{margin:5px 0 10px;font-size:30px;color:#e48728}.startBox p{font-size:18px;line-height:1.5}
+#startButton{border:0;border-radius:18px;background:#2874c6;color:#fff;padding:16px 30px;font-size:21px;font-weight:900;cursor:pointer}
+
+.syllables{font-size:clamp(30px,8vw,48px);font-weight:900;letter-spacing:4px;background:#fff;border-radius:22px;padding:18px;margin:0 auto 18px;width:min(94%,520px);box-shadow:0 8px 25px #0001}
+input{width:min(94%,520px);padding:17px;border:3px solid #d8e4ef;border-radius:18px;font-size:27px;font-weight:900;text-align:center;text-transform:uppercase;outline:none}
+#check{border:0;border-radius:17px;background:#2874c6;color:#fff;padding:15px 28px;font-size:20px;font-weight:900;margin-top:12px;cursor:pointer}
+.hint{font-size:16px;color:#7b8a99;margin-top:9px}
+@media(max-height:700px){#hud{top:30px}main{padding-top:85px}.picture{width:125px;height:125px}}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><script src="../student-access.js"></script></head><body>
+<div id="startScreen"><div class="startBox"><div class="startLogo">ARİJ</div><h2>🔤 Hece Oyunu</h2><p>Hece hece oku ve kelimeyi doğru yaz!</p><button id="startButton">Başla</button></div></div>
+<div id="hud"><div class="pill">⭐ <span id="score">0</span></div><div class="pill">⏱️ <span id="time">60</span></div><div class="pill">🎯 <span id="round">1</span>/10</div></div><div id="watermark">ARİJ OYUNU</div>
+<main><h1>🔤 Hece Oyunu</h1><div class="instruction">Heceleyerek kelimeyi yaz!</div><div class="picture" id="picture">🐟</div><div class="syllables" id="syllables">BA - LIK</div><input id="answer" autocomplete="off" autocapitalize="characters" placeholder="Kelimeyi yaz..."><br><button id="check">Kontrol Et</button><div class="hint">Örnek: BA - LIK → BALIK</div><div id="message"></div></main>
+<script>
+const sounds={click:new Audio("../sounds/click.wav"),correct:new Audio("../sounds/correct.wav"),wrong:new Audio("../sounds/wrong.wav")};
+function play(n){try{sounds[n].currentTime=0;sounds[n].play().catch(()=>{})}catch(e){}}
+const items=[
+{emoji:"🐟",word:"BALIK",hece:"BA - LIK"},{emoji:"🐱",word:"KEDİ",hece:"KE - Dİ"},{emoji:"🐶",word:"KÖPEK",hece:"KÖ - PEK"},
+{emoji:"🍎",word:"ELMA",hece:"EL - MA"},{emoji:"🌞",word:"GÜNEŞ",hece:"GÜ - NEŞ"},{emoji:"🍌",word:"MUZ",hece:"MUZ"},
+{emoji:"🚗",word:"ARABA",hece:"A - RA - BA"},{emoji:"🐘",word:"FİL",hece:"FİL"},{emoji:"🦁",word:"ASLAN",hece:"AS - LAN"},
+{emoji:"🌸",word:"ÇİÇEK",hece:"Çİ - ÇEK"},{emoji:"🥛",word:"SÜT",hece:"SÜT"},{emoji:"🐰",word:"TAVŞAN",hece:"TAV - ŞAN"}
+];
+let round=0,score=0,time=60,timer=null,current=null,locked=false;
+function nextRound(){if(round>=10){finish();return}locked=false;current=items[Math.floor(Math.random()*items.length)];round++;document.getElementById("round").textContent=round;document.getElementById("picture").textContent=current.emoji;document.getElementById("syllables").textContent=current.hece;document.getElementById("answer").value="";document.getElementById("message").textContent="";document.getElementById("answer").focus()}
+function check(){
+ if(locked)return;play("click");const value=document.getElementById("answer").value.trim().toUpperCase().replace(/\s+/g,"");
+ if(value===current.word){locked=true;score++;document.getElementById("score").textContent=score;document.getElementById("message").textContent="🎉 Doğru!";play("correct");setTimeout(nextRound,750)}
+ else{document.getElementById("message").textContent="Tekrar dene! 💪";play("wrong")}
+}
+function finish(){clearInterval(timer);document.getElementById("message").textContent=`🏆 Bitti! ${score} / 10`;document.getElementById("check").disabled=true;document.getElementById("answer").disabled=true}
+function startGame(){document.getElementById("startScreen").style.display="none";round=0;score=0;time=60;document.getElementById("score").textContent=0;document.getElementById("time").textContent=60;document.getElementById("check").disabled=false;document.getElementById("answer").disabled=false;nextRound();timer=setInterval(()=>{time--;document.getElementById("time").textContent=time;if(time<=0)finish()},1000)}
+document.getElementById("startButton").addEventListener("click",startGame);document.getElementById("check").addEventListener("click",check);document.getElementById("answer").addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+</script></body></html>
