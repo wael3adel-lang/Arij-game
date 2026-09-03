@@ -1,0 +1,59 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Kelime Kur | ARİJ</title><style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(180deg,#e9f8ff,#fff8e9);color:#26364a}
+#hud{position:fixed;top:12px;left:50%;transform:translateX(-50%);width:min(94%,650px);display:flex;justify-content:space-between;z-index:5;font-weight:900}
+.pill{background:#fff;padding:9px 14px;border-radius:14px;box-shadow:0 5px 18px #0001}
+#watermark{position:fixed;top:57px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:900;letter-spacing:3px;color:#8da1b4;opacity:.55}
+main{width:min(94%,620px);margin:auto;padding:105px 0 25px;text-align:center}h1{font-size:clamp(28px,7vw,43px);margin:0 0 7px;color:#2874c6}
+.instruction{font-size:clamp(18px,5vw,25px);font-weight:900;margin-bottom:17px}
+.picture{width:min(45vw,190px);height:min(45vw,190px);margin:0 auto 18px;background:#fff;border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:clamp(75px,20vw,120px);box-shadow:0 12px 35px #0001}
+#message{height:35px;margin-top:17px;font-size:21px;font-weight:900}
+#startScreen{position:fixed;inset:0;background:linear-gradient(180deg,#e9f8ff,#fff8e9);display:flex;align-items:center;justify-content:center;z-index:20;padding:20px}
+.startBox{width:min(92%,430px);background:#fff;border-radius:28px;padding:30px 22px;text-align:center;box-shadow:0 18px 55px #0002}
+.startLogo{font-size:42px;font-weight:900;color:#2874c6}.startBox h2{margin:5px 0 10px;font-size:30px;color:#e48728}.startBox p{font-size:18px;line-height:1.5}
+#startButton{border:0;border-radius:18px;background:#2874c6;color:#fff;padding:16px 30px;font-size:21px;font-weight:900;cursor:pointer}
+
+.letters{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;min-height:88px;max-width:520px;margin:auto}
+.letter{width:68px;height:68px;border:0;border-radius:18px;background:#fff;color:#2874c6;font-size:31px;font-weight:900;box-shadow:0 7px 20px #0001;cursor:pointer}
+.letter:active{transform:scale(.95)}.answer{min-height:68px;display:flex;justify-content:center;gap:8px;margin:12px auto;border-bottom:3px dashed #cbd8e5;padding-bottom:10px}
+.slot{width:55px;height:55px;border-radius:14px;background:#f2f7fc;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900}
+#clear{border:0;background:#fff0d8;color:#c87816;padding:11px 18px;border-radius:14px;font-weight:900;font-size:16px}
+@media(max-height:700px){#hud{top:30px}main{padding-top:85px}.picture{width:125px;height:125px}}
+</style></head><body>
+<div id="startScreen"><div class="startBox"><div class="startLogo">ARİJ</div><h2>🧩 Kelime Kur</h2><p>Resme bak ve karışık harfleri doğru sıraya koy!</p><button id="startButton">Başla</button></div></div>
+<div id="hud"><div class="pill">⭐ <span id="score">0</span></div><div class="pill">⏱️ <span id="time">60</span></div><div class="pill">🎯 <span id="round">1</span>/10</div></div><div id="watermark">ARİJ OYUNU</div>
+<main><h1>🧩 Kelime Kur</h1><div class="instruction">Harfleri doğru sıraya koy!</div><div class="picture" id="picture">🐱</div><div class="answer" id="answer"></div><div class="letters" id="letters"></div><button id="clear">Temizle</button><div id="message"></div></main>
+<script>
+const sounds={click:new Audio("../sounds/click.wav"),correct:new Audio("../sounds/correct.wav"),wrong:new Audio("../sounds/wrong.wav")};
+function play(n){try{sounds[n].currentTime=0;sounds[n].play().catch(()=>{})}catch(e){}}
+const items=[
+{emoji:"🐱",word:"KEDİ"},{emoji:"🐟",word:"BALIK"},{emoji:"🐶",word:"KÖPEK"},{emoji:"🍎",word:"ELMA"},
+{emoji:"🏠",word:"EV"},{emoji:"🌞",word:"GÜNEŞ"},{emoji:"🍌",word:"MUZ"},{emoji:"🚗",word:"ARABA"},
+{emoji:"🐘",word:"FİL"},{emoji:"🦁",word:"ASLAN"},{emoji:"🌸",word:"ÇİÇEK"},{emoji:"🥛",word:"SÜT"}
+];
+let round=0,score=0,time=60,timer=null,current=null,chosen=[],locked=false;
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function nextRound(){
+ if(round>=10){finish();return} locked=false;chosen=[];
+ current=items[Math.floor(Math.random()*items.length)];round++;
+ document.getElementById("round").textContent=round;document.getElementById("picture").textContent=current.emoji;document.getElementById("message").textContent="";
+ render();
+}
+function render(){
+ const ans=document.getElementById("answer"),box=document.getElementById("letters");ans.innerHTML="";box.innerHTML="";
+ current.word.split("").forEach((ch,i)=>{const s=document.createElement("div");s.className="slot";s.textContent=chosen[i]||"";ans.appendChild(s)});
+ shuffle(current.word.split("")).forEach((ch,i)=>{const b=document.createElement("button");b.className="letter";b.textContent=ch;b.dataset.i=i;b.addEventListener("click",()=>choose(b,ch));box.appendChild(b)});
+}
+function choose(button,ch){
+ if(locked||chosen.length>=current.word.length)return;play("click");chosen.push(ch);button.disabled=true;button.style.opacity=".35";
+ document.querySelectorAll(".slot")[chosen.length-1].textContent=ch;
+ if(chosen.length===current.word.length){
+   locked=true;
+   if(chosen.join("")===current.word){score++;document.getElementById("score").textContent=score;document.getElementById("message").textContent="🎉 Harika!";play("correct");setTimeout(nextRound,700)}
+   else{document.getElementById("message").textContent="Tekrar dene! 💪";play("wrong");setTimeout(()=>{chosen=[];render()},700)}
+ }
+}
+document.getElementById("clear").addEventListener("click",()=>{if(!locked){play("click");chosen=[];render()}});
+function finish(){clearInterval(timer);document.getElementById("message").textContent=`🏆 Bitti! ${score} / 10`;document.querySelectorAll("button").forEach(b=>b.disabled=true)}
+function startGame(){document.getElementById("startScreen").style.display="none";round=0;score=0;time=60;document.getElementById("score").textContent=0;document.getElementById("time").textContent=60;nextRound();timer=setInterval(()=>{time--;document.getElementById("time").textContent=time;if(time<=0)finish()},1000)}
+document.getElementById("startButton").addEventListener("click",startGame);
+</script></body></html>
