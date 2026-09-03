@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Sayı Avı - Çocuk Oyunu</title>
+<title>Sayı Avı - ARİJ OYUNU</title>
 
 <style>
 
@@ -33,20 +33,12 @@ button{
   touch-action:manipulation;
 }
 
-/* =========================
-   APP
-========================= */
-
 #app{
   position:relative;
   width:100%;
   height:100%;
   overflow:hidden;
 }
-
-/* =========================
-   GAME
-========================= */
 
 #game{
   position:absolute;
@@ -61,6 +53,7 @@ button{
       #034d6c 100%
     );
 }
+
 
 /* =========================
    SKY
@@ -124,6 +117,7 @@ button{
   left:72px;
   top:-36px;
 }
+
 
 /* =========================
    HUD
@@ -250,6 +244,44 @@ button{
     );
 }
 
+
+/* =========================
+   ARİJ OYUNU
+========================= */
+
+.arijWatermark{
+
+  position:absolute;
+
+  z-index:90;
+
+  left:50%;
+
+  transform:translateX(-50%);
+
+  top:calc(6px + 145px);
+
+  width:100%;
+
+  text-align:center;
+
+  color:#ffffff;
+
+  opacity:.25;
+
+  font-size:14px;
+
+  font-weight:900;
+
+  letter-spacing:4px;
+
+  pointer-events:none;
+
+  text-shadow:
+    0 1px 3px #003b4d55;
+}
+
+
 /* =========================
    SEA
 ========================= */
@@ -306,6 +338,7 @@ button{
     );
 }
 
+
 /* =========================
    PLANTS
 ========================= */
@@ -327,6 +360,7 @@ button{
 .plant2{
   right:10%;
 }
+
 
 /* =========================
    FISH
@@ -396,10 +430,6 @@ button{
   box-shadow:
     0 2px 5px #00364f66;
 
-  /*
-    يمنع الرقم من التفاعل مع اللمس
-    ويبقيه ثابتًا داخل السمكة
-  */
   pointer-events:none;
 }
 
@@ -437,6 +467,7 @@ button{
   }
 
 }
+
 
 /* =========================
    NET
@@ -527,6 +558,7 @@ button{
   border:1px solid #543016;
 }
 
+
 /* =========================
    FEEDBACK
 ========================= */
@@ -592,6 +624,7 @@ button{
   font-size:15px;
   font-weight:700;
 }
+
 
 /* =========================
    START
@@ -712,21 +745,30 @@ button{
   font-weight:900;
 }
 
+
 /* =========================
    MOBILE
 ========================= */
 
 @media(max-width:600px){
 
-  #hud{
-    width:98%;
+  /*
+    الترويسة أصبحت منخفضة على الموبايل
+    حتى لا تكون ملاصقة لأعلى الشاشة.
+  */
 
-    top:3px;
+  #hud{
+
+    top:52px;
+
+    width:98%;
 
     padding:5px 7px;
 
     border-radius:15px;
+
   }
+
 
   .logo{
     font-size:18px;
@@ -753,57 +795,140 @@ button{
     font-size:10px;
   }
 
-  #sea{
-    inset:19% 0 0;
+
+  /*
+    ARİJ OYUNU تحت الترويسة
+  */
+
+  .arijWatermark{
+
+    top:218px;
+
+    font-size:12px;
+
+    letter-spacing:3px;
+
+    opacity:.22;
+
   }
 
+
+  /*
+    البحر يبدأ أسفل قليلًا
+    حتى لا تتداخل السمكات مع الترويسة.
+  */
+
+  #sea{
+
+    inset:23% 0 0;
+
+  }
+
+
+  /*
+    سمكات أصغر على الموبايل
+  */
+
   .fish{
+
     width:82px;
     height:54px;
+
   }
 
   .fishNumber{
+
     width:27px;
     height:27px;
 
     font-size:18px;
+
   }
 
+
+  /*
+    شبكة أصغر
+  */
+
   #net{
+
     width:34px;
     height:34px;
+
   }
 
   .netCircle{
+
     border-width:3px;
+
   }
 
   .netMesh{
+
     inset:5px;
+
   }
 
   .netHandle{
+
     width:43px;
     height:5px;
 
     top:25px;
     right:-34px;
+
   }
 
+
   .startBox{
+
     padding:20px 14px;
+
   }
 
   .startEmoji{
+
     font-size:45px;
+
   }
 
   .startBox h1{
+
     font-size:28px;
+
   }
 
   .startBox p{
+
     font-size:14px;
+
+  }
+
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media(max-height:700px){
+
+  #hud{
+
+    top:35px;
+
+  }
+
+  .arijWatermark{
+
+    top:200px;
+
+  }
+
+  #sea{
+
+    inset:25% 0 0;
+
   }
 
 }
@@ -816,163 +941,203 @@ button{
 
 <div id="app">
 
-  <main id="game">
-
-    <div class="sun"></div>
-    <div class="cloud"></div>
+<main id="game">
 
 
-    <!-- ================= HUD ================= -->
+<div class="sun"></div>
 
-    <div id="hud">
+<div class="cloud"></div>
 
-      <div class="logo">
-        🎣 SAYI AVI
-      </div>
 
-      <div class="question">
-        ŞU SAYIYI YAKALA:
+<!-- ================= HUD ================= -->
 
-        <span id="target">
-          5
-        </span>
-      </div>
+<div id="hud">
 
-      <div class="stats">
+  <div class="logo">
+    🎣 SAYI AVI
+  </div>
 
-        <span>
-          ⭐ Puan:
-          <b id="score">0</b>
-        </span>
+  <div class="question">
 
-        <span>
-          🏆 Tur:
-          <b id="round">1</b>/10
-        </span>
+    ŞU SAYIYI YAKALA:
 
-        <span>
-          🔥 Seri:
-          <b id="streak">0</b>
-        </span>
+    <span id="target">
+      5
+    </span>
 
-      </div>
+  </div>
 
-      <div class="timer">
-        ⏱️ Kalan:
-        <b id="timerText">60</b>
-        saniye
-      </div>
 
-      <div class="timeBackground">
-        <div id="timeBar"></div>
-      </div>
+  <div class="stats">
+
+    <span>
+      ⭐ Puan:
+      <b id="score">0</b>
+    </span>
+
+    <span>
+      🏆 Tur:
+      <b id="round">1</b>/10
+    </span>
+
+    <span>
+      🔥 Seri:
+      <b id="streak">0</b>
+    </span>
+
+  </div>
+
+
+  <div class="timer">
+
+    ⏱️ Kalan:
+    <b id="timerText">60</b>
+    saniye
+
+  </div>
+
+
+  <div class="timeBackground">
+
+    <div id="timeBar"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= ARİJ OYUNU ================= -->
+
+<div class="arijWatermark">
+  ARİJ OYUNU
+</div>
+
+
+<!-- ================= SEA ================= -->
+
+<div id="sea">
+
+  <div class="wave wave1"></div>
+
+  <div class="wave wave2"></div>
+
+  <div class="wave wave3"></div>
+
+  <div class="seabed"></div>
+
+
+  <div class="plant plant1">
+    🌿
+  </div>
+
+  <div class="plant plant2">
+    🪸
+  </div>
+
+</div>
+
+
+<!-- ================= NET ================= -->
+
+<div id="net">
+
+  <div class="netCircle"></div>
+
+  <div class="netMesh"></div>
+
+  <div class="netHandle"></div>
+
+</div>
+
+
+<!-- ================= FEEDBACK ================= -->
+
+<div id="feedback">
+
+  <div
+    id="feedbackIcon"
+    class="feedbackIcon">
+    🎉
+  </div>
+
+  <div
+    id="feedbackTitle"
+    class="feedbackTitle">
+    AFERİN!
+  </div>
+
+  <div
+    id="feedbackText"
+    class="feedbackText">
+  </div>
+
+</div>
+
+
+<!-- ================= SOUND ================= -->
+
+<button
+  id="soundButton"
+  type="button">
+
+  🔊 SES AÇIK
+
+</button>
+
+
+<!-- ================= START ================= -->
+
+<div id="startScreen">
+
+  <div class="startBox">
+
+    <div class="startEmoji">
+      🐟🎣🌊
+    </div>
+
+    <h1>
+      Sayı Avı
+    </h1>
+
+    <p>
+
+      <b>Doğru balığı yakala!</b>
+
+      <br>
+
+      Ekranda bulunan 5 balıktan,
+      hedef sayıyı taşıyan balığı bul.
+
+    </p>
+
+
+    <div class="info">
+
+      🎯 5 balık
+      <br>
+
+      ⏱️ Her tur 60 saniye
+      <br>
+
+      🏆 10 tur
 
     </div>
 
-
-    <!-- ================= SEA ================= -->
-
-    <div id="sea">
-
-      <div class="wave wave1"></div>
-      <div class="wave wave2"></div>
-      <div class="wave wave3"></div>
-
-      <div class="seabed"></div>
-
-      <div class="plant plant1">
-        🌿
-      </div>
-
-      <div class="plant plant2">
-        🪸
-      </div>
-
-    </div>
-
-
-    <!-- ================= NET ================= -->
-
-    <div id="net">
-
-      <div class="netCircle"></div>
-      <div class="netMesh"></div>
-      <div class="netHandle"></div>
-
-    </div>
-
-
-    <!-- ================= FEEDBACK ================= -->
-
-    <div id="feedback">
-
-      <div
-        id="feedbackIcon"
-        class="feedbackIcon">
-        🎉
-      </div>
-
-      <div
-        id="feedbackTitle"
-        class="feedbackTitle">
-        AFERİN!
-      </div>
-
-      <div
-        id="feedbackText"
-        class="feedbackText">
-      </div>
-
-    </div>
-
-
-    <!-- ================= SOUND ================= -->
 
     <button
-      id="soundButton"
+      id="startButton"
       type="button">
-      🔊 SES AÇIK
+
+      Oyuna Başla 🚀
+
     </button>
 
+  </div>
 
-    <!-- ================= START ================= -->
+</div>
 
-    <div id="startScreen">
 
-      <div class="startBox">
-
-        <div class="startEmoji">
-          🐟🎣🌊
-        </div>
-
-        <h1>
-          Sayı Avı
-        </h1>
-
-        <p>
-          <b>Doğru balığı yakala!</b>
-          <br>
-          Ekranda bulunan 5 balıktan,
-          hedef sayıyı taşıyan balığı bul.
-        </p>
-
-        <div class="info">
-          🎯 5 balık<br>
-          ⏱️ Her tur 60 saniye<br>
-          🏆 10 tur
-        </div>
-
-        <button
-          id="startButton"
-          type="button">
-          Oyuna Başla 🚀
-        </button>
-
-      </div>
-
-    </div>
-
-  </main>
+</main>
 
 </div>
 
@@ -1113,24 +1278,12 @@ function playSound(name){
     if(result){
 
       result.catch(
-        function(){
-          /*
-            Audio file may not exist yet.
-            This must NEVER stop the game.
-          */
-        }
+        function(){}
       );
 
     }
 
-  }catch(error){
-
-    /*
-      Audio errors are deliberately ignored.
-      The game continues normally.
-    */
-
-  }
+  }catch(error){}
 
 }
 
@@ -1204,7 +1357,7 @@ function shuffle(array){
 
 
 /* =====================================================
-   FISH SVG
+   FISH COLORS
 ===================================================== */
 
 const colors = [
@@ -1242,6 +1395,10 @@ const colors = [
 ];
 
 
+/* =====================================================
+   FISH SVG
+===================================================== */
+
 function createFishSVG(color){
 
   return `
@@ -1274,8 +1431,6 @@ function createFishSVG(color){
     </defs>
 
 
-    <!-- TAIL -->
-
     <path
       d="
         M50 60
@@ -1290,8 +1445,6 @@ function createFishSVG(color){
     />
 
 
-    <!-- BODY -->
-
     <ellipse
       cx="108"
       cy="60"
@@ -1302,8 +1455,6 @@ function createFishSVG(color){
       stroke-width="3"
     />
 
-
-    <!-- TOP FIN -->
 
     <path
       d="
@@ -1318,8 +1469,6 @@ function createFishSVG(color){
     />
 
 
-    <!-- BOTTOM FIN -->
-
     <path
       d="
         M92 94
@@ -1331,8 +1480,6 @@ function createFishSVG(color){
       stroke-width="3"
     />
 
-
-    <!-- SCALES -->
 
     <g
       fill="none"
@@ -1351,8 +1498,6 @@ function createFishSVG(color){
 
     </g>
 
-
-    <!-- EYE -->
 
     <circle
       cx="158"
@@ -1378,8 +1523,6 @@ function createFishSVG(color){
     />
 
 
-    <!-- MOUTH -->
-
     <path
       d="
         M178 61
@@ -1391,8 +1534,6 @@ function createFishSVG(color){
       stroke-linecap="round"
     />
 
-
-    <!-- HIGHLIGHT -->
 
     <ellipse
       cx="83"
@@ -1439,17 +1580,8 @@ function createFish(){
   clearFish();
 
 
-  /*
-    The target is ALWAYS included.
-  */
-
   const numbers = [target];
 
-
-  /*
-    Add four DIFFERENT numbers.
-    No duplicate numbers.
-  */
 
   while(
     numbers.length <
@@ -1474,16 +1606,8 @@ function createFish(){
   }
 
 
-  /*
-    Shuffle the five numbers.
-  */
-
   shuffle(numbers);
 
-
-  /*
-    Create the five fish.
-  */
 
   for(
     let i=0;
@@ -1518,18 +1642,9 @@ function createFish(){
       `;
 
 
-    /*
-      Store the number directly
-      on the fish.
-    */
-
     fish.dataset.number =
       String(number);
 
-
-    /*
-      Random starting position.
-    */
 
     fish.style.left =
       randomNumber(5,82) + "%";
@@ -1537,11 +1652,6 @@ function createFish(){
     fish.style.top =
       randomNumber(8,82) + "%";
 
-
-    /*
-      Clicking anywhere on the fish
-      catches it.
-    */
 
     fish.addEventListener(
       "pointerdown",
@@ -1556,11 +1666,6 @@ function createFish(){
 
 
     sea.appendChild(fish);
-
-
-    /*
-      Start movement.
-    */
 
     moveFish(fish);
 
@@ -1612,19 +1717,13 @@ function startRound(){
 
   locked = false;
 
-
   feedback.classList.remove(
     "show"
   );
 
-
   net.style.display =
     "none";
 
-
-  /*
-    Select target.
-  */
 
   target =
     randomNumber(
@@ -1637,13 +1736,7 @@ function startRound(){
     target;
 
 
-  /*
-    IMPORTANT:
-    exactly five fish.
-  */
-
   createFish();
-
 
   startTimer();
 
@@ -1701,9 +1794,7 @@ function startTimer(){
 
         if(timeLeft <= 0){
 
-          clearInterval(
-            timerId
-          );
+          clearInterval(timerId);
 
           timeExpired();
 
@@ -1781,11 +1872,6 @@ function catchFish(fish){
   playSound("click");
 
 
-  /*
-    Position the small net
-    over the selected fish.
-  */
-
   const rect =
     fish.getBoundingClientRect();
 
@@ -1820,17 +1906,11 @@ function catchFish(fish){
     );
 
 
-  /* =========================
-     CORRECT
-  ========================= */
-
   if(value === target){
 
     locked = true;
 
-    clearInterval(
-      timerId
-    );
+    clearInterval(timerId);
 
 
     const points =
@@ -1883,10 +1963,6 @@ function catchFish(fish){
 
   }
 
-
-  /* =========================
-     WRONG
-  ========================= */
 
   fish.classList.add(
     "wrong"
@@ -2003,11 +2079,10 @@ function finishGame(){
 
   playing = false;
 
-  clearInterval(
-    timerId
-  );
+  clearInterval(timerId);
 
   clearFish();
+
 
   showFeedback(
     "🏆",
@@ -2043,13 +2118,6 @@ function finishGame(){
 ===================================================== */
 
 function startGame(){
-
-  /*
-    This is intentionally simple.
-    No async code.
-    No speech.
-    No external dependency.
-  */
 
   score = 0;
 
