@@ -2,11 +2,77 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="config.js"></script>
 <style>*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#e9f8ff,#fff7e8);display:flex;align-items:center;justify-content:center;color:#243447}.card{width:min(92%,430px);background:#fff;border-radius:28px;padding:30px;box-shadow:0 18px 50px #0001;text-align:center}.logo{font-size:42px;font-weight:900;color:#2676d8;margin-bottom:4px}.sub{color:#718096;margin-bottom:25px}input{width:100%;padding:17px;border:2px solid #dbe5ef;border-radius:16px;font-size:22px;text-align:center;text-transform:uppercase;outline:none}button{width:100%;margin-top:14px;padding:16px;border:0;border-radius:16px;background:#2676d8;color:#fff;font-size:20px;font-weight:800;cursor:pointer}#error{color:#d64545;font-weight:700;min-height:24px;margin-top:15px}#games{display:none}.game{display:block;margin:12px 0;padding:17px;background:#f3f8ff;border-radius:16px;color:#2468bd;text-decoration:none;font-weight:800;font-size:19px}.small{font-size:12px;color:#9aa7b4;margin-top:24px}</style></head><body><div class="card"><div class="logo">ARİJ</div><div class="sub">Eğlenceli Öğrenme Oyunları</div><div id="login"><input id="code" maxlength="1" inputmode="numeric" pattern="[1-9]" placeholder="Öğrenci numarası (1–9)" autocomplete="off"><button id="start">Oyuna Başla</button><div id="error"></div></div><div id="games"><div id="welcome" class="sub"></div><div id="gameList"></div></div><div class="small">ARİJ OYUNU</div></div>
 <script>
-const codeEl=document.getElementById('code'),errorEl=document.getElementById('error'),login=document.getElementById('login'),games=document.getElementById('games'),welcome=document.getElementById('welcome'),gameList=document.getElementById('gameList');
-function showGames(name,ids){welcome.textContent='Hoş geldin, '+name+'!';gameList.innerHTML='';ids.forEach(id=>{const g=GAMES[id];if(!g)return;const a=document.createElement('a');a.className='game';a.href=g.path;a.textContent=g.title;gameList.appendChild(a)});login.style.display='none';games.style.display='block'}
-async function loadStudent(code,showError=true){if(!window.supabaseClient){if(showError)errorEl.textContent='Supabase bağlantısı ayarlanmadı.';return false}const {data,error}=await window.supabaseClient.rpc('get_student_access',{p_code:code});if(error){console.error(error);if(showError)errorEl.textContent='Bağlantı hatası. Lütfen tekrar deneyin.';return false}if(!data||!data.length){if(showError)errorEl.textContent='Numara geçersiz veya pasif.';return false}const name=data[0].student_name;const ids=[...new Set(data.map(r=>r.game_id).filter(Boolean))];sessionStorage.setItem('arij_student_code',code);showGames(name,ids);return true}
-async function enter(){const code=codeEl.value.trim();if(!/^[1-9]$/.test(code)){errorEl.textContent='Lütfen 1 ile 9 arasında bir numara girin.';return}errorEl.textContent='Kontrol ediliyor...';await loadStudent(code,true)}
-document.getElementById('start').addEventListener('click',enter);codeEl.addEventListener('keydown',e=>{if(e.key==='Enter')enter()});
-(async function restoreSession(){const saved=(sessionStorage.getItem('arij_student_code')||'').trim();if(!saved)return;if(!/^[1-9]$/.test(saved)){sessionStorage.removeItem('arij_student_code');return}const ok=await loadStudent(saved,false);if(!ok)sessionStorage.removeItem('arij_student_code')})();
+const codeEl=document.getElementById('code'),
+errorEl=document.getElementById('error'),
+login=document.getElementById('login'),
+games=document.getElementById('games'),
+welcome=document.getElementById('welcome'),
+gameList=document.getElementById('gameList');
+
+function showGames(name, ids){
+  welcome.textContent='Hoş geldin, '+name+'!';
+  gameList.innerHTML='';
+  ids.forEach(id=>{
+    const g=GAMES[id];
+    if(!g)return;
+    const a=document.createElement('a');
+    a.className='game';
+    a.href=g.path;
+    a.textContent=g.title;
+    gameList.appendChild(a);
+  });
+  login.style.display='none';
+  games.style.display='block';
+}
+
+async function loadStudent(code, showError=true){
+  if(!window.supabaseClient){
+    if(showError) errorEl.textContent='Supabase bağlantısı ayarlanmadı.';
+    return false;
+  }
+
+  const {data,error}=await window.supabaseClient.rpc('get_student_access',{p_code:code});
+  if(error){
+    console.error(error);
+    if(showError) errorEl.textContent='Bağlantı hatası. Lütfen tekrar deneyin.';
+    return false;
+  }
+
+  if(!data || !data.length){
+    if(showError) errorEl.textContent='Numara geçersiz veya pasif.';
+    return false;
+  }
+
+  const name=data[0].student_name;
+  const ids=[...new Set(data.map(r=>r.game_id).filter(Boolean))];
+  sessionStorage.setItem('arij_student_code',code);
+  showGames(name,ids);
+  return true;
+}
+
+async function enter(){
+  const code=codeEl.value.trim();
+  if(!/^[1-9]$/.test(code)){
+    errorEl.textContent='Lütfen 1 ile 9 arasında bir numara girin.';
+    return;
+  }
+  errorEl.textContent='Kontrol ediliyor...';
+  await loadStudent(code,true);
+}
+
+document.getElementById('start').addEventListener('click',enter);
+codeEl.addEventListener('keydown',e=>{if(e.key==='Enter')enter()});
+
+// مهم: إذا عاد الطالب من لعبة، نبقيه داخل قائمة الألعاب المسموحة.
+(async function restoreSession(){
+  const saved=(sessionStorage.getItem('arij_student_code')||'').trim();
+  if(!saved) return;
+  if(!/^[1-9]$/.test(saved)){
+    sessionStorage.removeItem('arij_student_code');
+    return;
+  }
+  const ok=await loadStudent(saved,false);
+  if(!ok) sessionStorage.removeItem('arij_student_code');
+})();
 </script>
 </body></html>
